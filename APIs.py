@@ -42,10 +42,6 @@ def make_call_to_dictionary(word):
     curl.perform()
     curl.close()
 
-    #TODO: it may be worth changing this to a return all data
-    # then creating separate sections to handle data extraction
-    # See Issue #2, https://github.com/20004427/SCRAN/issues/2
-
     # converting the response data to a json object - so that the data can be read easier
     response = json.loads(response_buffer.getvalue().decode("UTF-8"))
     return response[0]
