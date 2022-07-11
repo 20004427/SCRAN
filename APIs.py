@@ -10,6 +10,7 @@ def get_word_definition(word):
     :param word: (STRING) The word to fetch
     :return: (STRING) the word definition
     """
+    # TODO: time api call
     # Setting up a buffer to handle the response
     response_buffer = BytesIO()
     # Setting up pycurl to get the data/ make request to the dictionary
