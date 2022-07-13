@@ -1,3 +1,6 @@
+# This is a modified version of
+# https://gist.github.com/anirudhjayaraman/272e920079fd8cea97f81487ef1e78a3
+
 # An undirected graph object.
 class Graph:
     def __init__(self):
