@@ -1,5 +1,8 @@
-#PyCharm
+# PyCharm
 .idea/
 
-#Python
+# Python
 __pycache__/
+
+# Excel
+*.xlsx
