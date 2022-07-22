@@ -1,5 +1,8 @@
-import pycurl, json
+import requests
+import json
+from pattern.text.en import lexeme
 from io import BytesIO
+
 
 
 def get_word_definition(word):
