@@ -3,6 +3,7 @@ import json
 from pattern.text.en import lexeme
 from io import BytesIO
 
+import Config
 
 
 def get_word_definition(word):
@@ -33,7 +34,6 @@ def make_call_to_dictionary(word):
     # TODO: time api call, See issue #1, https://github.com/20004427/SCRAN/issues/1
 
     response = requests.get(f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}')
-    print(response)
-    # converting the response data to a json object - so that the data can be read easier
-    response = json.loads(response)
-    return response[0]
+    if Config.DEBUG:
+        print(response.json())
+    return response.json()[0]
