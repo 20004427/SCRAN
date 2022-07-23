@@ -21,11 +21,15 @@ else:
 # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
 # So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
 lexeme_dictionary = {}
-for word in word_list:
+for word in word_list.iterrows():
+    print(word[1][0])
     # lexeme has no handling for if the word doesn't have any inflections.
     # For instance, Bamboozled will throw a RuntimeError.
     try:
-        lexeme_dictionary[word] = lexeme(word)
+        if Config.USE_TEST_DATA:
+            lexeme_dictionary[word] = lexeme(word)
+        else:
+            lexeme_dictionary[word] = list(lexeme(word[0]) | word[1:])
         if Config.DEBUG:
             print(f"Lexeme for word {word}:")
             # The call time is small enough that this is insignificant to the runtime
@@ -49,7 +53,7 @@ for key in lexeme_dictionary:
     for word in lexeme_dictionary:
         for inflection in lexeme_dictionary[word]:
             if Config.DEBUG:
-                print("Word: " + word)
+                print("Word: " + inflection)
             definition.replace(inflection, word)
     if Config.DEBUG:
         print(f"New Definition for {key}: \n{definition}")
