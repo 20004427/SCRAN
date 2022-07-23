@@ -35,27 +35,24 @@ for word in word_list:
         lexeme_dictionary[word] = []
 
 # Looping through the words
-for row_index, row in word_list.iterrows():
+for key in lexeme_dictionary:
     # Creating a node for each word
-    print(row[0])
-    word_node = Graph.Vertex(row[0])
+    print(key)
+    word_node = Graph.Vertex(key)
     graph.add_vertex(word_node)
-    definition = APIs.get_word_definition(row[0])
+    definition = APIs.get_word_definition(key)
     if Config.DEBUG:
-        print(f"Original definition for {row[0]}: \n{definition}")
+        print(f"Original definition for {key}: \n{definition}")
 
     # Running find and replace on the definition
     # For every word in the word list
-    for inner_row_index, inner_row in word_list.iterrows():
-        for word in inner_row[1:]:
-            # looping through the words in the row until an empty cell is found
-            if word == "nan" or type(word) == float:
-                break
+    for word in lexeme_dictionary:
+        for inflection in lexeme_dictionary[word]:
             if Config.DEBUG:
                 print("Word: " + word)
-            definition.replace(word, inner_row[0])
+            definition.replace(inflection, word)
     if Config.DEBUG:
-        print(f"New Definition for {row[0]}: \n{definition}")
+        print(f"New Definition for {key}: \n{definition}")
 
 for vertex in graph.vertices:
     print(vertex)
