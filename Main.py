@@ -2,6 +2,7 @@ import APIs
 import Config
 import Graph
 import HelperFunctions
+from pattern.text.en import lexeme
 
 word_list = []
 graph = Graph.Graph()
@@ -15,6 +16,24 @@ else:
         # Printing the first 10 rows of the df
         print("Word list:")
         print(word_list[:10])
+
+# For each key word. Finding the Lexeme of each.
+# Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
+# So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
+lexeme_dictionary = {}
+for word in word_list:
+    # lexeme has no handling for if the word doesn't have any inflections.
+    # For instance, Bamboozled will throw a RuntimeError.
+    try:
+        lexeme_dictionary[word] = lexeme(word)
+        if Config.DEBUG:
+            print(f"Lexeme for word {word}:")
+            # The call time is small enough that this is insignificant to the runtime
+            # It's ok just for debugging
+            print(lexeme(word))
+    except RuntimeError as e:
+        lexeme_dictionary[word] = []
+
 # Looping through the words
 for row_index, row in word_list.iterrows():
     # Creating a node for each word

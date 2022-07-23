@@ -32,19 +32,8 @@ def make_call_to_dictionary(word):
     """
     # TODO: time api call, See issue #1, https://github.com/20004427/SCRAN/issues/1
 
-    # Setting up a buffer to handle the response
-    response_buffer = BytesIO()
-    # Setting up pycurl to get the data/ make request to the dictionary
-    curl = pycurl.Curl()
-
-    # Setting the pycurl options
-    curl.setopt(curl.SSL_VERIFYPEER, False)
-    curl.setopt(curl.URL, f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}')
-    curl.setopt(curl.WRITEFUNCTION, response_buffer.write)
-
-    curl.perform()
-    curl.close()
-
+    response = requests.get(f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}')
+    print(response)
     # converting the response data to a json object - so that the data can be read easier
-    response = json.loads(response_buffer.getvalue().decode("UTF-8"))
+    response = json.loads(response)
     return response[0]
