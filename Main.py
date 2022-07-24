@@ -58,13 +58,13 @@ for key in lexeme_dictionary:
 
     # Running find and replace on the definition
     # For every word in the word list
-    for word in lexeme_dictionary:
-        for inflection in lexeme_dictionary[word]:
-            if Config.DEBUG:
-                print("Word: " + inflection)
-            definition.replace(inflection, word)
-    if Config.DEBUG:
-        print(f"New Definition for {key}: \n{definition}")
+    # if the definition is found
+    if definition != -1:
+        for word in lexeme_dictionary:
+            for inflection in lexeme_dictionary[word]:
+                definition.replace(inflection, word)
+        if Config.DEBUG:
+            print(f"New Definition for {key}: \n{definition}")
 
 for vertex in graph.vertices:
     print(vertex)
