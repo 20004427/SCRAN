@@ -48,6 +48,7 @@ def make_call_to_dictionary(word):
         return -1
 
 # __________ GOOGLE __________
+# Tutorial/ example: https://practicaldatascience.co.uk/data-science/how-to-scrape-google-search-results-using-python
 
 
 def scrape_google(word):
