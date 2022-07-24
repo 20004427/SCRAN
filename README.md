@@ -3,9 +3,10 @@
 
 ## Requirements
 ### Current working with Python3.10
-- requests
-- pandas~=1.3.4
 - pybind11
+- requests
+- requests_html
+- pandas~=1.3.4
 - pattern
 - openpyxl
 
