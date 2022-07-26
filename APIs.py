@@ -67,7 +67,24 @@ def scrape_google(word):
     """
     query = urllib.parse.quote_plus("Supply chain " + word)
     response = get_source(f"https://www.google.co.nz/search?q={query}")
-    links = list(response.html.absolute_links)
+    # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
+    results = list(response.html.find(".tF2Cxc"))
+
+    # Filtering out any links in the blacklist
+    ret = []
+    for result in results:
+        link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
+        if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
+            title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
+            text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
+            item = {'title': title,
+                    'link': link,
+                    'text': text}
+            ret.append(item)
+    # restricting the scrape to the first 10 sites
+    if len(ret) > Config.GOOGLE_SCRAPE_NO_SITES:
+        ret = ret[:Config.GOOGLE_SCRAPE_NO_SITES]
+    return ret
 
 
 def get_source(url):

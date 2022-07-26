@@ -8,6 +8,9 @@ word_list = []
 graph = Graph.Graph()
 lexeme_dictionary = {}
 
+print(APIs.scrape_google("supply chain shipping"))
+exit()
+
 if Config.USE_TEST_DATA:
     word_list = ["Bamboozled", "Risk", "Shipping", "Packaging"]
     # For each key word. Finding the Lexeme of each.
