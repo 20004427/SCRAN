@@ -78,6 +78,9 @@ def scrape_google(word):
             link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
         except AttributeError as e:
             if Config.DEBUG:
+                # The traceback package will print in red text.
+                # These aren't fatal errors, so I didn't want them to be red.
+                # Instead, defining my own traceback prints.
                 print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
             print(f"[WARNING] The link identifier isn't invalid for the website.")
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
