@@ -7,6 +7,7 @@ from requests_html import HTML
 from requests_html import HTMLSession
 
 import Config
+import HelperFunctions
 
 
 def get_word_definition(word):
@@ -73,14 +74,24 @@ def scrape_google(word):
     # Filtering out any links in the blacklist
     ret = []
     for result in results:
-        link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
+        try:
+            link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
+        except AttributeError as e:
+            if Config.DEBUG:
+                print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
+            print(f"[WARNING] The link identifier isn't invalid for the website.")
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
-            title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
-            text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
-            item = {'title': title,
-                    'link': link,
-                    'text': text}
-            ret.append(item)
+            try:
+                title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
+                text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
+                item = {'title': title,
+                        'link': link,
+                        'text': text}
+                ret.append(item)
+            except AttributeError as e:
+                if Config.DEBUG:
+                    print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
+                print(f"[WARNING] An identifier isn't invalid for the website {link}.")
     # restricting the scrape to the first 10 sites
     if len(ret) > Config.GOOGLE_SCRAPE_NO_SITES:
         ret = ret[:Config.GOOGLE_SCRAPE_NO_SITES]
