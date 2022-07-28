@@ -56,7 +56,7 @@ for key in lexeme_dictionary:
     # Scraping google
     scrape_results = APIs.scrape_google(key)
     # Using the scrape results to find related keywords
-    linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary)
+    linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, key)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
 
