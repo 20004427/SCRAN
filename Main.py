@@ -53,19 +53,10 @@ for key in lexeme_dictionary:
     print(key)
     word_node = Graph.Vertex(key)
     graph.add_vertex(word_node)
-    definition = APIs.get_word_definition(key)
+    # Scraping google
+    scrape_results = APIs.scrape_google(key)
+    # Using the scrape results to find related keywords
+    linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary)
     if Config.DEBUG:
-        print(f"Original definition for {key}: \n{definition}")
+        print(f"The keywords relating to {key} are {linking_keywords}")
 
-    # Running find and replace on the definition
-    # For every word in the word list
-    # if the definition is found
-    if definition != -1:
-        for word in lexeme_dictionary:
-            for inflection in lexeme_dictionary[word]:
-                definition.replace(inflection, word)
-        if Config.DEBUG:
-            print(f"New Definition for {key}: \n{definition}")
-
-for vertex in graph.vertices:
-    print(vertex)

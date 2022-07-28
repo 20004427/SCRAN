@@ -47,7 +47,7 @@ def get_traceback_location(exception):
     return ret
 
 
-def extract_keywords_from_scrape(scrape_list, keywords, no_keywords=3):
+def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, no_keywords=3):
     """
     Currently just using the inputted  keywords.
     TODO: Add learning algorithm to extract keywords,
@@ -58,19 +58,21 @@ def extract_keywords_from_scrape(scrape_list, keywords, no_keywords=3):
 
     :param no_keywords: (int) The number of keywords to return
     :param scrape_list: a list of scrape results in the form [{'link': ... , 'title': ..., 'text': ...}]
-    :param keywords: the list of inputted keywords
+    :param lexeme_dictionary: the list of inputted keywords and their corresponding inflections
     :return: (list| string) list of keywords
     """
-    keyword_counts = {i: 0 for i in keywords}
+    keyword_counts = {i: 0 for i in lexeme_dictionary.keys()}
     for site in scrape_list:
         blurb = site['text']
-        for keyword in keywords:
+        for keyword in lexeme_dictionary:
+            # replacing all inflections with the keyword
+            for inflection in lexeme_dictionary[keyword]:
+                blurb = blurb.replace(inflection, keyword)
             keyword_counts[keyword] += blurb.count(keyword)
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
     sorted(keyword_counts, key=lambda x: x[1], reverse=True)
-    ret_keywords = keyword_counts.keys()
+    ret_keywords = [i for i in keyword_counts]
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
     return ret_keywords[:no_keywords]
-
