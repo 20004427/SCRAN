@@ -31,7 +31,6 @@ def scrape_google(word):
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
     results = list(response.html.find(".tF2Cxc"))
 
-    # Filtering out any links in the blacklist
     ret = []
     for result in results:
         try:
@@ -43,6 +42,7 @@ def scrape_google(word):
                 # Instead, defining my own traceback prints.
                 print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
             print(f"[WARNING] The link identifier isn't invalid for the website.")
+        # Filtering out any links in the blacklist
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
             try:
                 title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
