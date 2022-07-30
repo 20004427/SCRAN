@@ -1,10 +1,14 @@
+import networkx as nx
+import matplotlib.pyplot as plt
 # This is a modified version of
 # https://gist.github.com/anirudhjayaraman/272e920079fd8cea97f81487ef1e78a3
+
 
 # An undirected graph object.
 class Graph:
     def __init__(self):
         self.vertices = {}
+        self.visual = []
 
     def add_vertex(self, vertex):
         if isinstance(vertex, Vertex) and vertex not in self.vertices:
@@ -17,6 +21,15 @@ class Graph:
             vertex_parent.add_neighbor(vertex_child)
             self.vertices[vertex_parent.name] = vertex_parent.neighbors
             self.vertices[vertex_child.name] = vertex_child.neighbors
+        temp = [vertex_parent, vertex_child]
+        if temp not in self.visual:
+            self.visual.append(temp)
+
+    def visualize(self):
+        graph = nx.Graph()
+        graph.add_edges_from(self.visual)
+        nx.draw_networkx(graph)
+        plt.show()
 
 
 # A Vertex class.

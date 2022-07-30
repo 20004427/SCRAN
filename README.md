@@ -9,6 +9,8 @@
 - pandas~=1.3.4
 - pattern
 - openpyxl
+- networkx
+- matplotlib
 
 ***
 ## External documentation
