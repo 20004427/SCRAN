@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 class Graph:
     def __init__(self):
         self.vertices = {}
+        # This just makes it easier to visualize in python
         self.visual = []
 
     def add_vertex(self, vertex):

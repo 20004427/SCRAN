@@ -79,3 +79,23 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
     return ret_keywords[:no_keywords]
+
+
+def export_to_pajek(graph):
+    """
+    Exports the graph for use in pajek
+
+    :param graph: (Graph) a undirected Graph
+    :return: (NONE)
+    """
+    file = open("output.NET", "w+")
+    # Adding the vertices
+    file.write(f"*vertices {len(graph.vertices)}")
+    file.write("*Edges")
+    # You don't have to declare the vertices,
+    # Pajek will automatically add them via edges
+    for vertice in graph.vertices:
+        for node in graph.vertices[vertice]:
+            file.write(f"{vertice} {node}")
+    file.close()
+
