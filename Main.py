@@ -61,4 +61,4 @@ for key in lexeme_dictionary:
         graph.add_edge(key, word)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
-
+graph.visualize()
