@@ -47,7 +47,7 @@ def get_traceback_location(exception):
     return ret
 
 
-def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, no_keywords=3):
+def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword, no_keywords=3):
     """
     Currently just using the inputted  keywords.
     TODO: Add learning algorithm to extract keywords,
@@ -56,6 +56,8 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, no_keywords=3):
     Returns a list of the n most commonly occurring keywords from the different
     site descriptions. Note: it will not count keywords that occur 0 times.
 
+    :param parent_keyword: (String) the keyword for the current iteration.
+        So that it isn't included in the returned keywords
     :param no_keywords: (int) The number of keywords to return
     :param scrape_list: a list of scrape results in the form [{'link': ... , 'title': ..., 'text': ...}]
     :param lexeme_dictionary: the list of inputted keywords and their corresponding inflections
@@ -65,10 +67,11 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, no_keywords=3):
     for site in scrape_list:
         blurb = site['text']
         for keyword in lexeme_dictionary:
-            # replacing all inflections with the keyword
-            for inflection in lexeme_dictionary[keyword]:
-                blurb = blurb.replace(inflection, keyword)
-            keyword_counts[keyword] += blurb.count(keyword)
+            if keyword != parent_keyword:
+                # replacing all inflections with the keyword
+                for inflection in lexeme_dictionary[keyword]:
+                    blurb = blurb.replace(inflection, keyword)
+                keyword_counts[keyword] += blurb.count(keyword)
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
     sorted(keyword_counts, key=lambda x: x[1], reverse=True)
