@@ -62,3 +62,4 @@ for key in lexeme_dictionary:
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
 graph.visualize()
+HelperFunctions.export_to_pajek(graph)

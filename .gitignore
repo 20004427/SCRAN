@@ -6,3 +6,6 @@ __pycache__/
 
 # Excel
 *.xlsx
+
+# pajek
+*.NET
