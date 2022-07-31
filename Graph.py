@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 # An undirected graph object.
 class Graph:
     def __init__(self):
+        # This is directional
         self.vertices = {}
         # This just makes it easier to visualize in python
+        # This is undirectional
         self.visual = []
 
     def add_vertex(self, vertex):
@@ -22,7 +24,7 @@ class Graph:
             vertex_parent.add_neighbor(vertex_child)
             self.vertices[vertex_parent.name] = vertex_parent.neighbors
             self.vertices[vertex_child.name] = vertex_child.neighbors
-        temp = [vertex_parent, vertex_child]
+        temp = [vertex_parent.name, vertex_child.name]
         if temp not in self.visual:
             self.visual.append(temp)
 

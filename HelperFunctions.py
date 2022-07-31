@@ -90,12 +90,11 @@ def export_to_pajek(graph):
     """
     file = open("output.NET", "w+")
     # Adding the vertices
-    file.write(f"*vertices {len(graph.vertices)}")
-    file.write("*Edges")
+    file.write(f"*vertices {len(graph.vertices)}\n")
+    file.write("*Edges\n")
     # You don't have to declare the vertices,
     # Pajek will automatically add them via edges
-    for vertice in graph.vertices:
-        for node in graph.vertices[vertice]:
-            file.write(f"{vertice} {node}")
+    for vertice, vertice_2 in graph.visual:
+        file.write(f"{vertice} {vertice_2}\n")
     file.close()
 
