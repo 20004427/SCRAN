@@ -1,5 +1,21 @@
 # SCRAN
 ***
+<b>Takes an excel spreadsheet as input.</b> This files needs to be in the directory root, and called "Words.xlsx" - Although this 
+can be configured in the Config.py 
+The excel spreadsheet can include inflections (optional). For instance:
+<table>
+<tr><td>Ship</td><td>Shipping</td><td>shipped</td></tr>
+<tr><td>Export</td><td></td><td></td></tr>
+<tr><td>Inflation</td><td></td><td></td></tr>
+<tr><td>Warehouse</td><td>warehousing</td><td></td></tr>
+</table>
+<b>NOTE: </b>The program uses a lexeme library - so most inflections are automatically included.
+This just allows you to include some more obscure supply chain related inflections.
+See the "External Documentation" section for more information about the lexeme library.
+
+The <b>output is stored in output.NET in the project root.</b>
+
+***
 
 ## Requirements
 ### Current working with Python3.10
@@ -18,7 +34,7 @@
 - Lexeme API: http://digiasset.org/html/pattern-en.html
 
 ***
-## Instructions
+## Setup Instructions
 1. Install Python 3.10 - found here: https://www.python.org/downloads/release/python-3100/
 2. Download this repo. You can do this from this page by clicking on code and either downloading it as a zip, or cloning the repo using git.
 3. Open Command prompt or Powershell, and cd to the root of the project. Some helpful commands:
