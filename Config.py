@@ -1,7 +1,7 @@
 # __________ Config/ global variables __________
 # NOTE: THESE ARE ALL CONSTANTS!
 DEBUG = True
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
 # ____ Google scrape _____

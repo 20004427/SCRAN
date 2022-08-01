@@ -1,4 +1,6 @@
 import pandas
+from pattern.text.en import lexeme
+from rake_nltk import Rake
 
 
 def read_keywords(path, sheet_name, column_headers=None):
@@ -64,14 +66,28 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     :return: (list| string) list of keywords
     """
     keyword_counts = {i: 0 for i in lexeme_dictionary.keys()}
+    r = Rake()
+    ai_keywords = []
     for site in scrape_list:
-        blurb = site['text']
+        blurb = site['text'].replace("...", "")
+        print(blurb)
         for keyword in lexeme_dictionary:
             if keyword != parent_keyword:
                 # replacing all inflections with the keyword
                 for inflection in lexeme_dictionary[keyword]:
                     blurb = blurb.replace(inflection, keyword)
                 keyword_counts[keyword] += blurb.count(keyword)
+        # This gets the keywords.
+        r.extract_keywords_from_text(blurb)
+        # This extracts them (also clears the list)
+        keywords = r.get_ranked_phrases()
+        print(f"the learning algorithm got: {keywords}")
+        ai_keywords.extend(keywords)
+    print("\n\n")
+    print(ai_keywords)
+    print("\n\n")
+
+
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
     sorted(keyword_counts, key=lambda x: x[1], reverse=True)

@@ -2,12 +2,15 @@ import APIs
 import Config
 import Graph
 import HelperFunctions
+import nltk
 from pattern.text.en import lexeme
 
 word_list = []
 graph = Graph.Graph()
 lexeme_dictionary = {}
-
+# Getting required resources for nltk_rake
+nltk.download('stopwords')
+nltk.download('punkt')
 
 if Config.USE_TEST_DATA:
     word_list = ["Bamboozled", "Risk", "Shipping", "Packaging"]
