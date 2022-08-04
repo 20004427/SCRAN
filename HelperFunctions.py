@@ -65,25 +65,22 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     :param lexeme_dictionary: the list of inputted keywords and their corresponding inflections
     :return: (list| string) list of keywords
     """
-    keyword_counts = {i: 0 for i in lexeme_dictionary.keys()}
+    keyword_counts = {}
     kb = keybert.KeyBERT()
-    ai_keywords = []
     for site in scrape_list:
         blurb = site['text'].replace("...", "")
         print(blurb)
-        for keyword in lexeme_dictionary:
-            if keyword != parent_keyword:
-                # replacing all inflections with the keyword
-                for inflection in lexeme_dictionary[keyword]:
-                    blurb = blurb.replace(inflection, keyword)
-                keyword_counts[keyword] += blurb.count(keyword)
         # This gets the keywords.
-        keywords = kb.extract_keywords(blurb)
+        keywords = [i[0] for i in kb.extract_keywords(blurb)]
+        # for each of the keywords, running the lexeme and taking the first inflection.
+        keywords = [lexeme(i)[0] for i in keywords]
+        # now adding the keywords to keyword counts
+        for keyword in set(keywords):
+            if keyword not in keyword_counts:
+                keyword_counts[keyword] = keywords.count(keyword)
+            else:
+                keyword_counts[keyword] += keywords.count(keyword)
         print(f"the learning algorithm got: {keywords}")
-        ai_keywords.extend(keywords)
-    print("\n\n")
-    print(ai_keywords)
-    print("\n\n")
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
     sorted(keyword_counts, key=lambda x: x[1], reverse=True)
