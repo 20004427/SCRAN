@@ -27,7 +27,7 @@ The <b>output is stored in output.NET in the project root.</b>
 - openpyxl
 - networkx
 - matplotlib
-- rake-nltk
+- keybert
 
 ***
 ## External documentation

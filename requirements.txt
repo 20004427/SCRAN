@@ -6,5 +6,4 @@ pattern~=3.6
 openpyxl
 networkx~=2.8.5
 matplotlib~=3.5.2
-nltk~=3.7
-rake-nltk
+keybert
