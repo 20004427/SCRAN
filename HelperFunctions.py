@@ -73,7 +73,8 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
         # This gets the keywords.
         keywords = [i[0] for i in kb.extract_keywords(blurb)]
         # for each of the keywords, running the lexeme and taking the first inflection.
-        keywords = [lexeme(i)[0] for i in keywords]
+        # Also lowering them - so that we don't get duplicates
+        keywords = [lexeme(i)[0].lower() for i in keywords]
         # now adding the keywords to keyword counts
         for keyword in set(keywords):
             if keyword not in keyword_counts:

@@ -48,6 +48,8 @@ else:
 
 # Looping through the words
 for key in lexeme_dictionary:
+    # Lowering so that we don't have duplicate nodes i.e. Tax and tax
+    key = key.lower()
     # Creating a node for each word
     print(key)
     word_node = Graph.Vertex(key)
