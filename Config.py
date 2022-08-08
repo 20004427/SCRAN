@@ -1,7 +1,7 @@
 # __________ Config/ global variables __________
 # NOTE: THESE ARE ALL CONSTANTS!
 DEBUG = True
-USE_TEST_DATA = True
+USE_TEST_DATA = False
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
 # ____ Google scrape _____
@@ -19,3 +19,11 @@ GOOGLE_SCRAPE_IDENTIFIER_SECTION = ".tF2Cxc"
 GOOGLE_SCRAPE_IDENTIFIER_TITLE = "h3"
 GOOGLE_SCRAPE_IDENTIFIER_LINK = ".yuRUbf a"
 GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
+
+# Blacklist of keywords to ignore
+# Note: The program will automatically change everything to lowercase
+#       This prevents duplicate nodes.
+BLACKLIST_KEYWORDS = ["supply",
+                      "chain",
+                      "supplychain",
+                      "supply chain"]
