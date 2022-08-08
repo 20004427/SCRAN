@@ -23,6 +23,7 @@ GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
 # Blacklist of keywords to ignore
 # Note: The program will automatically change everything to lowercase
 #       This prevents duplicate nodes.
+#       So words in this list need to be lowercase, because this is a constant.
 BLACKLIST_KEYWORDS = ["supply",
                       "chain",
                       "supplychain",
