@@ -6,20 +6,47 @@ import matplotlib.pyplot as plt
 
 # An undirected graph object.
 class Graph:
+    """
+    Class for graph object.
+    Uses the vertex class.
+    Use to create an UNDIRECTED graph.
+    For the purposes of this project, there is no point in having directed edges.
+    """
     def __init__(self):
+        """
+        INIT: Initializes the vertices.
+        """
         # This is directional
         self.vertices = {}
         # This just makes it easier to visualize in python
-        # This is undirectional
+        # This is un-directional
         self.visual = []
 
     def add_vertex(self, vertex):
+        """
+        Adds a vertex to the graph.
+        If false, then either: the vertex is already in the graph.
+        Or, the vertex is not of type Vertex.
+        TODO: ! isinstance should throw error, whilst already in graph should return False?
+            See issue #8 https://github.com/20004427/SCRAN/issues/8
+
+        :param vertex: (Vertex)
+        :return: (BOOLEAN) True == success, False == Failed
+        """
         if isinstance(vertex, Vertex) and vertex not in self.vertices:
             self.vertices[vertex.name] = vertex.neighbors
+            return True
         else:
             return False
 
     def add_edge(self, vertex_parent, vertex_child):
+        """
+        Adds an undirected edge too the graph.
+
+        :param vertex_parent: (Vertex)
+        :param vertex_child: (Vertex)
+        :return: (NONE)
+        """
         if isinstance(vertex_parent, Vertex) and isinstance(vertex_child, Vertex):
             vertex_parent.add_neighbor(vertex_child)
             self.vertices[vertex_parent.name] = vertex_parent.neighbors
@@ -29,6 +56,11 @@ class Graph:
             self.visual.append(temp)
 
     def visualize(self):
+        """
+        Draws the graph using pyplot
+
+        :return: (NONE)
+        """
         graph = nx.Graph()
         graph.add_edges_from(self.visual)
         nx.draw_networkx(graph)
@@ -39,15 +71,38 @@ class Graph:
 # Stores information about this vertex such as its neighbors.
 # The name is essentially the key
 class Vertex:
+    """
+    Class for a vertex.
+    This is more for directed graph - as it allows each vertex to
+    keep track of its own neighbors.
+    However, I though I might as well just leave it in.
+    In this case, we could just use an array of tuples, i.e.
+    [(node0, node1), (node0, node3), etc.]
+    The visual variable stores the nodes in this way.
+    """
     def __init__(self, name):
+        """
+        Initializes the name,
+        Sets neighbors to empty array.
+
+        :param name: (String)
+        """
         self.name = name
         self.neighbors = []
 
     def add_neighbor(self, neighbor):
+        """
+        Adds a neighbor to the vertex.
+        # TODO: issue 8, https://github.com/20004427/SCRAN/issues/8
+
+        :param neighbor: (Vertex)
+        :return: (BOOLEAN) False == neighbor already exists, True == Success
+        """
         if isinstance(neighbor, Vertex):
             # Checking if it is already a neighbor
             if neighbor.name not in self.neighbors:
                 self.neighbors.append(neighbor.name)
                 neighbor.neighbors.append(self.name)
+                return True
             else:
                 return False

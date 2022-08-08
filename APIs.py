@@ -1,9 +1,5 @@
 import requests
 import urllib
-import json
-from pattern.text.en import lexeme
-from io import BytesIO
-from requests_html import HTML
 from requests_html import HTMLSession
 
 import Config
@@ -33,6 +29,7 @@ def scrape_google(word):
 
     ret = []
     for result in results:
+        link = ""
         try:
             link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
         except AttributeError as e:
@@ -73,5 +70,5 @@ def get_source(url):
         return response
     except requests.exceptions.RequestException as e:
         if Config.DEBUG:
-            print(f"[ERROR] {e.strerror()}")
+            print(f"[ERROR] {e.strerror}")
         return -1
