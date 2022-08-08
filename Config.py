@@ -1,5 +1,5 @@
 # __________ Config/ global variables __________
-# NOTE: THESE ARE ALL CONSTANTS!
+# ____ CONSTANTS ____
 DEBUG = True
 USE_TEST_DATA = False
 PATH_TO_WORD_LIST = "words.xlsx"
@@ -26,4 +26,5 @@ GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
 BLACKLIST_KEYWORDS = ["supply",
                       "chain",
                       "supplychain",
-                      "supply chain"]
+                      "supply chain",
+                      "chains"]

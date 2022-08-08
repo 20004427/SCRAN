@@ -1,6 +1,7 @@
 import pandas
-from pattern.text.en import lexeme
 import keybert
+import Config
+from pattern.text.en import lexeme
 
 
 def read_keywords(path, sheet_name):
@@ -71,7 +72,8 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
         blurb = site['text'].replace("...", "")
         print(blurb)
         # This gets the keywords.
-        keywords = [i[0] for i in kb.extract_keywords(blurb)]
+        # Ignoring any keywords in the blacklist
+        keywords = [i[0] for i in kb.extract_keywords(blurb) if i[0].lower() not in Config.BLACKLIST_KEYWORDS]
         # for each of the keywords, running the lexeme and taking the first inflection.
         # Also lowering them - so that we don't get duplicates
         keywords = [lexeme(i)[0].lower() for i in keywords]
