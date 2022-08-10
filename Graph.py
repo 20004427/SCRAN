@@ -84,7 +84,7 @@ class Graph:
 
         for node_to_remove in nodes_to_remove:
             # Need to remove the edge from
-
+            continue
 
 # A Vertex class.
 # Stores information about this vertex such as its neighbors.
