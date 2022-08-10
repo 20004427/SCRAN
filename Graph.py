@@ -66,6 +66,25 @@ class Graph:
         nx.draw_networkx(graph)
         plt.show()
 
+    def clean_up_graph(self):
+        """
+        This function will remove:
+        - edges onto itself i.e. [cost, cost]
+        - situations such as [raw, rawmaterial]
+
+        :return:
+        """
+        # list of tuples to store a vertex to remove, and the
+        # vertex's neighbor that edges need to now connect too.
+        nodes_to_remove = []
+        for key, value in self.vertices.items():
+            for vertex in value:
+                if key in vertex:
+                    nodes_to_remove.append([key, vertex])
+
+        for node_to_remove in nodes_to_remove:
+            # Need to remove the edge from
+
 
 # A Vertex class.
 # Stores information about this vertex such as its neighbors.
@@ -106,3 +125,17 @@ class Vertex:
                 return True
             else:
                 return False
+
+    def remove_neighbor(self, neighbor):
+        """
+        Function to remove a neighbor from this vertex.
+
+        :param neighbor: (Vertex)
+        :return: (Boolean) True: Success, False: passed vertex is not a neighbor of this vertex.
+        """
+        if isinstance(neighbor, Vertex):
+            if neighbor.name not in self.neighbors:
+                return False
+            else:
+                self.neighbors.remove(neighbor)
+                return True

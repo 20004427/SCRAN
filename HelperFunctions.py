@@ -112,4 +112,3 @@ def export_to_pajek(graph):
     for vertex, vertex_2 in graph.visual:
         file.write(f"{list(graph.vertices.keys()).index(vertex) + 1} {list(graph.vertices.keys()).index(vertex_2) + 1}\n")
     file.close()
-
