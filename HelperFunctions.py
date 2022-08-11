@@ -105,10 +105,11 @@ def export_to_pajek(graph):
     file.write(f"*vertices {len(graph.vertices)}\n")
     for vertex in graph.vertices:
         # Pajek indexing starts from 1 not 0
-        file.write(f"{list(graph.vertices.keys()).index(vertex) + 1} \"{vertex}\"\n")
+        file.write(f"{vertex.vertex_id} \"{vertex.name}\"\n")
     file.write("*Edges\n")
     # You don't have to declare the vertices,
     # Pajek will automatically add them via edges
-    for vertex, vertex_2 in graph.visual:
-        file.write(f"{list(graph.vertices.keys()).index(vertex) + 1} {list(graph.vertices.keys()).index(vertex_2) + 1}\n")
+    for vertex in graph.vertices:
+        for vertex_2 in vertex.neighbors:
+            file.write(f"{vertex.vertex_id} {vertex_2.vertex_id}\n")
     file.close()
