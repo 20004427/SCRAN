@@ -1,11 +1,11 @@
 import APIs
 import Config
-import Graph
 import HelperFunctions
+import networkx as nx
 from pattern.text.en import lexeme
 
 word_list = []
-graph = Graph.Graph()
+graph = nx.Graph()
 lexeme_dictionary = {}
 
 
@@ -50,17 +50,16 @@ else:
 # Looping through the words
 for key in lexeme_dictionary:
     # Creating a node for each word
-    print(key)
-    word_node = Graph.Vertex(key)
-    graph.add_vertex(word_node)
+    graph.add_node(key)
     # Scraping google
     scrape_results = APIs.scrape_google(key)
     # Using the scrape results to find related keywords
     linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, key)
     for word in linking_keywords:
-        word_node_2 = Graph.Vertex(word)
-        graph.add_edge(word_node, word_node_2)
+        graph.add_node(word)
+        graph.add_edge(key, word)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
-graph.visualize()
+nx.draw_networkx(graph)
 HelperFunctions.export_to_pajek(graph)
+

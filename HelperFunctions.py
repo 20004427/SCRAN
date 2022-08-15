@@ -1,6 +1,5 @@
 import pandas
 
-
 def read_keywords(path, sheet_name, column_headers=None):
     """Function to read a list of words from an excel file.
     Returns a Pandas object.
@@ -88,17 +87,19 @@ def export_to_pajek(graph):
     :param graph: (Graph) a undirected Graph
     :return: (NONE)
     """
-    graph.reset_ids()
     file = open("output.NET", "w+")
     # Adding the vertices
-    file.write(f"*vertices {len(graph.vertices)}\n")
-    for vertice in graph.vertices:
+    file.write(f"*vertices {len(graph.nodes)}\n")
+    vertex_ids = {}
+    for vertex in graph.nodes:
+        vertex_id = list(graph.nodes).index(vertex) + 1
         # Pajek indexing starts from 1 not 0
-        file.write(f"{list(graph.vertices.keys()).index(vertice) + 1} \"{vertice}\"\n")
+        file.write(f"{vertex_id} \"{vertex}\"\n")
+        vertex_ids[vertex] = vertex_id
     file.write("*Edges\n")
     # You don't have to declare the vertices,
     # Pajek will automatically add them via edges
-    for vertice, vertice_2 in graph.visual:
-        file.write(f"{list(graph.vertices.keys()).index(vertice) + 1} {list(graph.vertices.keys()).index(vertice_2) + 1}\n")
+    for vertex, vertex_2 in graph.edges:
+        file.write(f"{vertex_ids[vertex]} {vertex_ids[vertex_2]}\n")
     file.close()
 
