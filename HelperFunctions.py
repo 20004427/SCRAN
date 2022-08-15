@@ -88,6 +88,7 @@ def export_to_pajek(graph):
     :param graph: (Graph) a undirected Graph
     :return: (NONE)
     """
+    graph.reset_ids()
     file = open("output.NET", "w+")
     # Adding the vertices
     file.write(f"*vertices {len(graph.vertices)}\n")
