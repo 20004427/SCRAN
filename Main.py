@@ -2,6 +2,7 @@ import APIs
 import Config
 import HelperFunctions
 import networkx as nx
+import matplotlib.pyplot as pt
 from pattern.text.en import lexeme
 
 word_list = []
@@ -60,6 +61,7 @@ for key in lexeme_dictionary:
         graph.add_edge(key, word)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
-nx.draw_networkx(graph)
+nx.draw(graph, with_labels=True)
+pt.savefig("output.png")
 HelperFunctions.export_to_pajek(graph)
 
