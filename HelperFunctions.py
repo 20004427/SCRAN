@@ -102,14 +102,16 @@ def export_to_pajek(graph):
     """
     file = open("output.NET", "w+")
     # Adding the vertices
-    file.write(f"*vertices {len(graph.vertices)}\n")
-    for vertex in graph.vertices:
+    file.write(f"*vertices {len(graph.nodes)}\n")
+    vertex_ids = {}
+    for vertex in graph.nodes:
+        vertex_id = list(graph.nodes).index(vertex) + 1
         # Pajek indexing starts from 1 not 0
-        file.write(f"{vertex.vertex_id} \"{vertex.name}\"\n")
+        file.write(f"{vertex_id} \"{vertex}\"\n")
+        vertex_ids[vertex] = vertex_id
     file.write("*Edges\n")
     # You don't have to declare the vertices,
     # Pajek will automatically add them via edges
-    for vertex in graph.vertices:
-        for vertex_2 in vertex.neighbors:
-            file.write(f"{vertex.vertex_id} {vertex_2.vertex_id}\n")
+    for vertex, vertex_2 in graph.edges:
+        file.write(f"{vertex_ids[vertex]} {vertex_ids[vertex_2]}\n")
     file.close()

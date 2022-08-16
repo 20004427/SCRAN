@@ -1,11 +1,12 @@
 import APIs
 import Config
-import Graph
 import HelperFunctions
+import networkx as nx
+import matplotlib.pyplot as pt
 from pattern.text.en import lexeme
 
 word_list = []
-graph = Graph.Graph()
+graph = nx.Graph()
 lexeme_dictionary = {}
 
 if Config.USE_TEST_DATA:
@@ -51,19 +52,16 @@ for key in lexeme_dictionary:
     # Lowering so that we don't have duplicate nodes i.e. Tax and tax
     key = key.lower()
     # Creating a node for each word
-    print(key)
-    word_node = Graph.Vertex(key, len(graph.vertices) + 1)
-    graph.add_vertex(word_node)
+    graph.add_node(key)
     # Scraping google
     scrape_results = APIs.scrape_google(key)
     # Using the scrape results to find related keywords
     linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, key)
     for word in linking_keywords:
-        word_node_2 = Graph.Vertex(word, len(graph.vertices) + 1)
-        graph.add_vertex(word_node_2)
-        graph.add_edge(word_node, word_node_2)
+        graph.add_node(word)
+        graph.add_edge(key, word)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
-graph.visualize()
-graph.clean_up_graph()
+nx.draw(graph, with_labels=True)
+pt.savefig("output.png")
 HelperFunctions.export_to_pajek(graph)
