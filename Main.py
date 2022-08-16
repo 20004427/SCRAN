@@ -62,6 +62,8 @@ for key in lexeme_dictionary:
         graph.add_edge(key, word)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
+
+HelperFunctions.cleanup_graph(graph)
 # Output
 pos = nx.spring_layout(graph)
 nx.draw(graph, with_labels=True, pos=pos)

@@ -115,3 +115,35 @@ def export_to_pajek(graph):
     for vertex, vertex_2 in graph.edges:
         file.write(f"{vertex_ids[vertex]} {vertex_ids[vertex_2]}\n")
     file.close()
+
+
+def cleanup_graph(graph):
+    """
+    Function to cleanup the graph.
+
+    :param graph: (networkx)
+    :return: None
+    """
+    # because we are using a lexeme, it is very unlikely we will
+    # have a node contained in more than one neighbor
+    # This is a TODO: allow for this possibility
+    #               See issue 9: https://github.com/20004427/SCRAN/issues/9
+
+    # creating a copy of the nodes, so that we can loop through them
+    # doing it this way so that it's a deep copy
+    current_nodes = [i for i in graph.nodes]
+
+    for node in current_nodes:
+        new_node = ""
+        node_neighbors = [i for i in graph.neighbors(node)]
+        for neighbor in node_neighbors:
+            if node in neighbor:
+                new_node = neighbor
+        # removing a node from networkx, will remove all Edges
+        # it doesn't clean the up graph.
+        # so re-adding the edges here.
+        if new_node != "":
+            node_neighbors.remove(new_node)
+            for neighbor in node_neighbors:
+                graph.add_edge(new_node, neighbor)
+            graph.remove_node(node)
