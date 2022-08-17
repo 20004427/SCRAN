@@ -23,17 +23,24 @@ def scrape_google(word):
     :param word: (String) Ideally a word, but can be a phrase
     :return: (Array| String) List of keywords relating to the input
     """
+    stats_text = ""
     query = urllib.parse.quote_plus("Supply chain " + word)
     response = get_source(f"https://www.google.co.nz/search?q={query}")
+
+    try:
+        stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS)
+    except AttributeError as e:
+        HelperFunctions.print_identifier_error("stats", e)
+    print(stats_text)
+
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
-    results = list(response.html.find(".tF2Cxc"))
+    results = list(response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_SECTION))
 
     ret = []
     for result in results:
         link = ""
         text = ""
         title = ""
-        stats_text = ""
         try:
             link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
         except AttributeError as e:
@@ -50,11 +57,6 @@ def scrape_google(word):
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("text", e, link)
 
-            try:
-                stats_text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
-            except AttributeError as e:
-                HelperFunctions.print_identifier_error("stats", e, link)
-            print(stats_text)
             item = {'title': title,
                     'link': link,
                     'text': text}
