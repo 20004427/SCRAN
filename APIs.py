@@ -5,6 +5,7 @@ from requests_html import HTMLSession
 import Config
 import HelperFunctions
 
+
 # __________ GOOGLE __________
 
 
@@ -30,28 +31,35 @@ def scrape_google(word):
     ret = []
     for result in results:
         link = ""
+        text = ""
+        title = ""
+        stats_text = ""
         try:
             link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
         except AttributeError as e:
-            if Config.DEBUG:
-                # The traceback package will print in red text.
-                # These aren't fatal errors, so I didn't want them to be red.
-                # Instead, defining my own traceback prints.
-                print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
-            print(f"[WARNING] The link identifier isn't invalid for the website.")
+            HelperFunctions.print_identifier_error("link", e, link)
         # Filtering out any links in the blacklist
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
             try:
                 title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
-                text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
-                item = {'title': title,
-                        'link': link,
-                        'text': text}
-                ret.append(item)
             except AttributeError as e:
-                if Config.DEBUG:
-                    print(f"[ERROR] {HelperFunctions.get_traceback_location(e)} {e.__str__()}")
-                print(f"[WARNING] An identifier isn't invalid for the website {link}.")
+                HelperFunctions.print_identifier_error("title", e, link)
+
+            try:
+                text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
+            except AttributeError as e:
+                HelperFunctions.print_identifier_error("text", e, link)
+
+            try:
+                stats_text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
+            except AttributeError as e:
+                HelperFunctions.print_identifier_error("stats", e, link)
+            print(stats_text)
+            item = {'title': title,
+                    'link': link,
+                    'text': text}
+            ret.append(item)
+
     # restricting the scrape to the first 10 sites
     if len(ret) > Config.GOOGLE_SCRAPE_NO_SITES:
         ret = ret[:Config.GOOGLE_SCRAPE_NO_SITES]

@@ -147,3 +147,12 @@ def cleanup_graph(graph):
             for neighbor in node_neighbors:
                 graph.add_edge(new_node, neighbor)
             graph.remove_node(node)
+
+
+def print_identifier_error(name, error, link="unknown"):
+    # The traceback package will print in red text.
+    # These aren't fatal errors, so I didn't want them to be red.
+    # Instead, defining my own traceback prints.
+    if Config.DEBUG:
+        print(f"[ERROR] {get_traceback_location(error)} {error.__str__()}")
+    print(f"[WARNING] Identifier {name} is invalid for the website {link}.")

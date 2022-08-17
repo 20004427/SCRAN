@@ -19,6 +19,7 @@ GOOGLE_SCRAPE_IDENTIFIER_SECTION = ".tF2Cxc"
 GOOGLE_SCRAPE_IDENTIFIER_TITLE = "h3"
 GOOGLE_SCRAPE_IDENTIFIER_LINK = ".yuRUbf a"
 GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
+GOOGLE_SCRAPE_IDENTIFIER_STATS = "result-stats"
 
 # Blacklist of keywords to ignore
 # Note: The program will automatically change everything to lowercase
