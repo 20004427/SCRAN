@@ -24,14 +24,23 @@ def scrape_google(word):
     :return: (Array| String) List of keywords relating to the input
     """
     stats_text = ""
+    number_of_search_results = None
     query = urllib.parse.quote_plus("Supply chain " + word)
     response = get_source(f"https://www.google.co.nz/search?q={query}")
 
     try:
-        stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS)
+        stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
-    print(stats_text)
+    # Extracting the no of results from the stats_text
+    # We know it should always be the 2nd string in the list when split.
+    # raw, the stats_text is:
+    #   About 940,000 results
+    #   (0.22 seconds)
+    if stats_text != "":
+        number_of_search_results = int("".join(stats_text.split()[1].split(",")))
+    if Config.DEBUG:
+        print(f"number of search results for {word}: {number_of_search_results}")
 
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
     results = list(response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_SECTION))
