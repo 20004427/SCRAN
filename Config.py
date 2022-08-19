@@ -1,7 +1,7 @@
 # __________ Config/ global variables __________
 # ____ CONSTANTS ____
 DEBUG = True
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
 # ____ Google scrape _____
@@ -20,6 +20,9 @@ GOOGLE_SCRAPE_IDENTIFIER_TITLE = "h3"
 GOOGLE_SCRAPE_IDENTIFIER_LINK = ".yuRUbf a"
 GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
 GOOGLE_SCRAPE_IDENTIFIER_STATS = "#result-stats"
+
+# ___ GOOGLE SCHOLAR ___
+GOOGLE_SCHOLAR_IDENTIFIER_STATS = ".gs_ab_mdw"
 
 # Blacklist of keywords to ignore
 # Note: The program will automatically change everything to lowercase
