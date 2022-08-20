@@ -1,10 +1,10 @@
 # __________ Config/ global variables __________
 # ____ CONSTANTS ____
 DEBUG = True
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
-# ____ Google scrape _____
+# ____ Google scrape ____
 # blacklist for google scrape
 GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
                            "https://www.google.",
@@ -30,3 +30,6 @@ BLACKLIST_KEYWORDS = ["supply",
                       "supplychain",
                       "supply chain",
                       "chains"]
+# ____ Pajek ____
+PAJEK_ORIGINAL_NODE_COLOR = "Green"
+PAJEK_OTHER_NODE_COLOR = "Purple"
