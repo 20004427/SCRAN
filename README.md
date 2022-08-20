@@ -1,5 +1,6 @@
 # SCRAN
 ***
+### Input
 <b>Takes an excel spreadsheet as input.</b> This files needs to be in the directory root, and called "Words.xlsx" - Although this 
 can be configured in the Config.py 
 The excel spreadsheet can include inflections (optional). For instance:
@@ -12,21 +13,31 @@ The excel spreadsheet can include inflections (optional). For instance:
 <b>NOTE: </b>The program uses a lexeme library - so most inflections are automatically included.
 This just allows you to include some more obscure supply chain related inflections.
 See the "External Documentation" section for more information about the lexeme library.
+<br/><br/>
 
-The <b>output is stored in output.NET in the project root.</b>
+### Output
+The <b>output is stored in output.NET in the project root.</b><br/>
+Nodes in the output file are colour coded as follows:
+- Purple: None-original nodes 
+- Green: The nodes contained in the input file
 
+<b>NOTE:</b> By default, Pajek will not use the colours for nodes and edges contained within the 
+Input file. To enable the .net node colours, first load the .net file into pajek. Then draw the network.
+Once this is done, in the top bar, click options -> Colors -> Vertices -> As defined in the .net file.
+Pajek will now use the colours in the .net file rather than the user defined colours. 
+For more info, see: https://blog.katastros.com/a?ID=00500-7af1781a-21ab-42e3-8e79-d36ae54d2487 
 ***
 
 ## Requirements
 ### Current working with Python3.10
 - pybind11
-- requests
+- requests~=2.28.1
 - requests_html
 - pandas~=1.3.4
-- pattern
+- pattern~=3.6
 - openpyxl
-- networkx
-- matplotlib
+- networkx~=2.8.5
+- matplotlib~=3.5.2
 - keybert
 
 ***
