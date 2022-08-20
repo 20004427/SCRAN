@@ -1,5 +1,7 @@
 import pandas
 
+import Config
+
 
 def read_keywords(path, sheet_name, column_headers=None):
     """Function to read a list of words from an excel file.
@@ -81,7 +83,7 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     return ret_keywords[:no_keywords]
 
 
-def export_to_pajek(graph):
+def export_to_pajek(graph, original_nodes=[]):
     """
     Exports the graph for use in pajek
 
@@ -95,7 +97,12 @@ def export_to_pajek(graph):
     for vertex in graph.nodes:
         vertex_id = list(graph.nodes).index(vertex) + 1
         # Pajek indexing starts from 1 not 0
-        file.write(f"{vertex_id} \"{vertex}\"\n")
+        string_to_write = f"{vertex_id} \"{vertex}\" "
+        if vertex in original_nodes:
+            string_to_write += f"ic {Config.PAJEK_ORIGINAL_NODE_COLOR}\n"
+        else:
+            string_to_write += f"ic {Config.PAJEK_OTHER_NODE_COLOR}\n"
+        file.write(string_to_write)
         vertex_ids[vertex] = vertex_id
     file.write("*Edges\n")
     # You don't have to declare the vertices,
@@ -103,4 +110,5 @@ def export_to_pajek(graph):
     for vertex, vertex_2 in graph.edges:
         file.write(f"{vertex_ids[vertex]} {vertex_ids[vertex_2]}\n")
     file.close()
+
 

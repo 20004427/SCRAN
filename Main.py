@@ -63,5 +63,5 @@ for key in lexeme_dictionary:
         print(f"The keywords relating to {key} are {linking_keywords}")
 nx.draw(graph, with_labels=True)
 pt.savefig("output.png")
-HelperFunctions.export_to_pajek(graph)
+HelperFunctions.export_to_pajek(graph, [key for key in lexeme_dictionary])
 
