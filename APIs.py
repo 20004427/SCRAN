@@ -110,7 +110,7 @@ def google_scholar_word_popularity(word):
         #   About 940,000 results
         #   (0.22 seconds)
         try:
-            number_of_search_results = int("".join(i.text.split()[1].split(",")))
+            number_of_google_scholar_results = int("".join(i.text.split()[1].split(",")))
             # once the number_of_search_results has been found we can just break the loop
             break
         except ValueError as e:
@@ -118,8 +118,8 @@ def google_scholar_word_popularity(word):
                 HelperFunctions.print_identifier_error("stats", e)
 
     if Config.DEBUG:
-        print(f"number of search results for {word}: {number_of_search_results}")
-    return number_of_search_results
+        print(f"number of search results for {word}: {number_of_google_scholar_results}")
+    return number_of_google_scholar_results
 
 
 def get_source(url):
