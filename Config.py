@@ -2,8 +2,10 @@
 # ____ CONSTANTS ____
 DEBUG = True
 USE_TEST_DATA = True
+USE_POPULARITY_ON_INPUT = False
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
+MINIMUM_WORD_POPULARITY = 10000
 # ____ Google scrape ____
 # blacklist for google scrape
 GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",

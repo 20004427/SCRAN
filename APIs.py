@@ -12,8 +12,8 @@ import HelperFunctions
 def scrape_google(word):
     """
     Function to scrape google results.
-    Looks at the top 10 sites, and looks for keywords.
-    Returns a list of keywords.
+    Returns the number of search results followed by a list of scrapes.
+    Each scrape site is a dictionary
     Note that the input does not need to contain 'supply chain',
     This function adds 'Supply chain' to the start of the query.
     This isn't technically an API, but thought that it should probably be here.
@@ -21,7 +21,11 @@ def scrape_google(word):
         See issue #5: https://github.com/20004427/SCRAN/issues/5
 
     :param word: (String) Ideally a word, but can be a phrase
-    :return: (Array| String) List of keywords relating to the input
+    :return: (Array| String) number of search results for the input word,
+        Followed by a list of scrape results.
+        i.e. [1000, {'link': "https:// www.thisisanexample.com",
+                      'text': "Hey, that's pretty pog",
+                     'title': "The art of pogness"}, ...]
     """
     stats_text = ""
     number_of_search_results = None
@@ -45,7 +49,7 @@ def scrape_google(word):
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
     results = list(response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_SECTION))
 
-    ret = []
+    ret = [number_of_search_results]
     for result in results:
         link = ""
         text = ""

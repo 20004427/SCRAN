@@ -53,8 +53,8 @@ for key in lexeme_dictionary:
     key = key.lower()
     # Creating a node for each word
     graph.add_node(key)
-    # Scraping google
-    scrape_results = APIs.scrape_google(key)
+    # Scraping google, the first array item is the number of results
+    scrape_results = APIs.scrape_google(key)[1:]
     number_of_google_scholar_results = APIs.google_scholar_word_popularity(key)
     # Using the scrape results to find related keywords
     linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, key)
