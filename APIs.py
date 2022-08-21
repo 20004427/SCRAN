@@ -77,6 +77,47 @@ def scrape_google(word):
     return ret
 
 
+def google_scholar_word_popularity(word):
+    """Takes a word and finds the number of results for that word in google scholar.
+    This is used to:
+    a) weight the nodes
+    b) check if we should stop the recursion.
+
+    :param word: (String)
+    :return: (int) number of results.
+    """
+    stats_text = ""
+    query = urllib.parse.quote_plus("Supply chain " + word)
+    response = get_source(f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={query}")
+    number_of_google_scholar_results = 0
+    try:
+        stats_text = response.html.find(Config.GOOGLE_SCHOLAR_IDENTIFIER_STATS)
+    except AttributeError as e:
+        HelperFunctions.print_identifier_error("stats", e)
+    # unlike the google search results, google scholar uses a class instead of an id for the
+    # stats. So looping through the divs with that class until one works correctly -
+    # this can be presumed to be the correct div.
+    for i in stats_text:
+        # i is a html element object
+
+        # Extracting the no of results from the stats_text
+        # We know it should always be the 2nd string in the list when split.
+        # raw, the stats_text is:
+        #   About 940,000 results
+        #   (0.22 seconds)
+        try:
+            number_of_search_results = int("".join(i.text.split()[1].split(",")))
+            # once the number_of_search_results has been found we can just break the loop
+            break
+        except ValueError as e:
+            if Config.DEBUG:
+                HelperFunctions.print_identifier_error("stats", e)
+
+    if Config.DEBUG:
+        print(f"number of search results for {word}: {number_of_search_results}")
+    return number_of_search_results
+
+
 def get_source(url):
     """Returns the source code for the provided URL.
 
