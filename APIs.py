@@ -91,11 +91,12 @@ def google_scholar_word_popularity(word):
     :return: (int) number of results.
     """
     stats_text = ""
-    query = urllib.parse.quote_plus("Supply chain " + word)
-    response = get_source(f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={query}")
+    query = urllib.parse.quote_plus("\"Supply chain\" " + word)
+    response = get_source(f"https://scholar.google.com/scholar?q={query}")
     number_of_google_scholar_results = 0
     try:
         stats_text = response.html.find(Config.GOOGLE_SCHOLAR_IDENTIFIER_STATS)
+        print(response.html)
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # unlike the google search results, google scholar uses a class instead of an id for the
@@ -118,7 +119,7 @@ def google_scholar_word_popularity(word):
                 HelperFunctions.print_identifier_error("stats", e)
 
     if Config.DEBUG:
-        print(f"number of search results for {word}: {number_of_google_scholar_results}")
+        print(f"number of search results for \"supply chain\" {word}: {number_of_google_scholar_results}")
     return number_of_google_scholar_results
 
 

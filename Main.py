@@ -61,6 +61,7 @@ for key in lexeme_dictionary:
     for word in linking_keywords:
         graph.add_node(word)
         graph.add_edge(key, word)
+        HelperFunctions.recursively_scrape_word(word, lexeme_dictionary, graph)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
 
