@@ -1,9 +1,12 @@
 import pandas
 import keybert
+
+import APIs
 import Config
 from pattern.text.en import lexeme
 
 import Config
+import HelperFunctions
 
 
 def read_keywords(path, sheet_name):
@@ -163,3 +166,30 @@ def print_identifier_error(name, error, link="unknown"):
     if Config.DEBUG:
         print(f"[ERROR] {get_traceback_location(error)} {error.__str__()}")
     print(f"[WARNING] Identifier {name} is invalid for the website {link}.")
+
+
+def recursively_scrape_word(word, lexeme_dictionary, graph):
+    """
+    Function to recursively scrape google for linking keywords given an input word
+    to start from. There is no need for this to return anything but the boolean value.
+    Since a graph object is used to store the nodes and edges.
+
+    :param word:
+    :param lexeme_dictionary:
+    :param graph:
+    :return: (Boolean) True: The word is above the minimum search result count limit.
+                       False: The word is below, or equal to, the minimum search result count limit.
+    """
+    word = word.lower()
+    number_of_google_scholar_results = APIs.google_scholar_word_popularity(word)
+    if number_of_google_scholar_results <= Config.MINIMUM_WORD_POPULARITY:
+        return False
+    graph.add_node(word)
+    scrape_results = APIs.scrape_google(word)[1:]
+    linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
+    for w in linking_keywords:
+        if recursively_scrape_word(w, lexeme_dictionary, graph):
+            graph.add_edge(word, w)
+    if Config.DEBUG:
+        print(f"The keywords relating to {word} are {linking_keywords}")
+    return True
