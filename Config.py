@@ -13,6 +13,7 @@ GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
                            "https://maps.",
                            "https://support."]
 GOOGLE_SCRAPE_NO_SITES = 10
+GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 5
 # This is the css attribute given to results by google
 # This is subject to change, maybe worth investigating a better way to do this?
 # TODO: Is there a better way to find the articles in a google search result
@@ -25,6 +26,7 @@ GOOGLE_SCRAPE_IDENTIFIER_STATS = "#result-stats"
 
 # ___ GOOGLE SCHOLAR ___
 GOOGLE_SCHOLAR_IDENTIFIER_STATS = ".gs_ab_mdw"
+
 
 # Blacklist of keywords to ignore
 # Note: The program will automatically change everything to lowercase
