@@ -29,9 +29,8 @@ def scrape_google(word):
     """
     stats_text = ""
     number_of_search_results = None
-    query = urllib.parse.quote_plus("Supply chain " + word)
+    query = urllib.parse.quote_plus("\"Supply chain\" " + word)
     response = get_source(f"https://www.google.co.nz/search?q={query}")
-
     try:
         stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
     except AttributeError as e:

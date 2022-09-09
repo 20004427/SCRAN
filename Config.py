@@ -12,6 +12,13 @@ GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
                            "https://www.google.",
                            "https://maps.",
                            "https://support."]
+SCRAPE_SEARCH_ENGINES = ["https://www.google.co.nz/search?q={}",
+                         "https://www.bing.com/search?q={}",
+                         "https://duckduckgo.com/?q={}",
+                         "https://nz.search.yahoo.com/search?q={}",
+                         "https://dogpile.com/serp?q={}"]
+SCRAPE_MIN_DELAY = 100
+SCRAPE_MAX_DELAY = 2000
 GOOGLE_SCRAPE_NO_SITES = 10
 GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 5
 # This is the css attribute given to results by google
