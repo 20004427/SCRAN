@@ -46,7 +46,6 @@ else:
         # Getting the union of the two lists.
         lexeme_dictionary[word] = list(set(lexeme_set) | set(inflections))
 
-
 # Looping through the words
 for key in lexeme_dictionary:
     # Lowering so that we don't have duplicate nodes i.e. Tax and tax

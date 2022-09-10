@@ -1,4 +1,9 @@
 # __________ Config/ global variables __________
+# ____ RUNTIME GLOBALS (NON-CONSTANT)
+# This is used by Main, HelperFunctions, and APIs,
+# So made it global - so that we don't have to keep passing about and returning it.
+google_search_engine = 0
+
 # ____ CONSTANTS ____
 DEBUG = True
 USE_TEST_DATA = True
@@ -17,8 +22,9 @@ SCRAPE_SEARCH_ENGINES = ["https://www.google.co.nz/search?q={}",
                          "https://duckduckgo.com/?q={}",
                          "https://nz.search.yahoo.com/search?q={}",
                          "https://dogpile.com/serp?q={}"]
-SCRAPE_MIN_DELAY = 100
-SCRAPE_MAX_DELAY = 2000
+# Delay is in seconds
+SCRAPE_MIN_DELAY = 0.
+SCRAPE_MAX_DELAY = 5
 GOOGLE_SCRAPE_NO_SITES = 10
 GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 5
 # This is the css attribute given to results by google

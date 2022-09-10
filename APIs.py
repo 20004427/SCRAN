@@ -1,5 +1,7 @@
 import requests
 import urllib
+import time
+import random
 from requests_html import HTMLSession
 
 import Config
@@ -30,7 +32,10 @@ def scrape_google(word):
     stats_text = ""
     number_of_search_results = None
     query = urllib.parse.quote_plus("\"Supply chain\" " + word)
-    response = get_source(f"https://www.google.co.nz/search?q={query}")
+    response = get_source(Config.SCRAPE_SEARCH_ENGINES[Config.google_search_engine].format(query))
+    HelperFunctions.increment_search_engine()
+    wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
+    time.sleep(wait_time)
     try:
         stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
     except AttributeError as e:

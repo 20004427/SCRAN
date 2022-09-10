@@ -103,6 +103,7 @@ def export_to_pajek(graph, original_nodes=[]):
     Exports the graph for use in pajek
 
     :param graph: (Graph) a undirected Graph
+    :param original_nodes: (Array)
     :return: (NONE)
     """
     file = open("output.NET", "w+")
@@ -177,6 +178,7 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     :param word:
     :param lexeme_dictionary:
     :param graph:
+    :param n: (int) current recursion depth
     :return: (Boolean) True: The word is above the minimum search result count limit.
                        False: The word is below, or equal to, the minimum search result count limit.
     """
@@ -192,3 +194,10 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     if Config.DEBUG:
         print(f"The keywords relating to {word} are {linking_keywords}")
     return True
+
+
+def increment_search_engine():
+    if Config.google_search_engine + 1 == len(Config.SCRAPE_SEARCH_ENGINES):
+        Config.google_search_engine = 0
+    else:
+        Config.google_search_engine += 1
