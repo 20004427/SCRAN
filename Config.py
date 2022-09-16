@@ -6,7 +6,7 @@ google_search_engine = 0
 
 # ____ CONSTANTS ____
 DEBUG = True
-USE_TEST_DATA = True
+USE_TEST_DATA = False
 USE_POPULARITY_ON_INPUT = False
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
@@ -17,13 +17,37 @@ GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
                            "https://www.google.",
                            "https://maps.",
                            "https://support."]
-SCRAPE_SEARCH_ENGINES = ["https://www.google.co.nz/search?q={}",
-                         "https://www.bing.com/search?q={}",
-                         "https://duckduckgo.com/?q={}",
-                         "https://nz.search.yahoo.com/search?q={}",
-                         "https://dogpile.com/serp?q={}"]
+# The different search engines have different html classes/ id's.
+# So using a dictionary to store them.
+# Note: you don't have to use keys to access items, you can
+#       get the values as an iterable
+# Stored as {search engine name:
+#               {url:, identifier_section:, identifier_title:,
+#               identifier_link:, identifier_text:, identifier_stats:}}
+# None means that it doesn't exist for that search engine
+SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}",
+                                    "identifier_section": ".tF2Cxc",
+                                    "identifier_title": "h3",
+                                    "identifier_link": ".yuRUbf a",
+                                    "identifier_stats": "#result-stats"},
+                         "bing": {"url": "https://www.bing.com/search?q={}",
+                                  "identifier_section": ".b_algo",
+                                  "identifier_title": "h2",
+                                  "identifier_link": ".b_algoheader a",
+                                  "identifier_stats": ".sb_count"},
+                         "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
+                                        "identifier_section": ".yQDlj3B5DI5YO8c8Ulio",
+                                        "identifier_title": "span",
+                                        "identifier_link": ".LnpumSThxEWMIsDdAT17 a",
+                                        "identifier_stats": None},
+                         "yahoo": {"url": "https://nz.search.yahoo.com/search?q={}",
+                                   "identifier_section": ".algo-sr",
+                                   "identifier_title": ".ls-05",
+                                   "identifier_link": ".ls-05",
+                                   "identifier_stats": ".fz-14"},
+                         "dogpile": "https://dogpile.com/serp?q={}"}
 # Delay is in seconds
-SCRAPE_MIN_DELAY = 0.
+SCRAPE_MIN_DELAY = 0
 SCRAPE_MAX_DELAY = 5
 GOOGLE_SCRAPE_NO_SITES = 10
 GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 5
