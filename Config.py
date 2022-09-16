@@ -29,23 +29,33 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                     "identifier_section": ".tF2Cxc",
                                     "identifier_title": "h3",
                                     "identifier_link": ".yuRUbf a",
-                                    "identifier_stats": "#result-stats"},
+                                    "identifier_stats": "#result-stats",
+                                    "identifier_text": ".VwiC3b"},
                          "bing": {"url": "https://www.bing.com/search?q={}",
                                   "identifier_section": ".b_algo",
                                   "identifier_title": "h2",
                                   "identifier_link": ".b_algoheader a",
-                                  "identifier_stats": ".sb_count"},
+                                  "identifier_stats": ".sb_count",
+                                  "identifier_text": ".b_lineclamp2"},
                          "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
                                         "identifier_section": ".yQDlj3B5DI5YO8c8Ulio",
                                         "identifier_title": "span",
                                         "identifier_link": ".LnpumSThxEWMIsDdAT17 a",
-                                        "identifier_stats": None},
+                                        "identifier_stats": None,
+                                        "identifier_text": ".OgdwYG6KE2qthn9XQWFC"},
                          "yahoo": {"url": "https://nz.search.yahoo.com/search?q={}",
                                    "identifier_section": ".algo-sr",
                                    "identifier_title": ".ls-05",
                                    "identifier_link": ".ls-05",
-                                   "identifier_stats": ".fz-14"},
-                         "dogpile": "https://dogpile.com/serp?q={}"}
+                                   "identifier_stats": ".fz-14",
+                                   "identifier_text": ".fbox-lc3"},
+                         "dogpile": {"url": "https://dogpile.com/serp?q={}",
+                                     "identifier_section": ".web-bing__result",
+                                     "identifier_title": "a",
+                                     "identifier_link": ".web-bing__title",
+                                     "identifier_stats": None,
+                                     "identifier_text": ".web-bing__description"}
+                         }
 # Delay is in seconds
 SCRAPE_MIN_DELAY = 0
 SCRAPE_MAX_DELAY = 5

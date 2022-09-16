@@ -29,15 +29,18 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
+    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[Config.google_search_engine]
     stats_text = ""
     number_of_search_results = None
     query = urllib.parse.quote_plus("\"Supply chain\" " + word)
-    response = get_source(Config.SCRAPE_SEARCH_ENGINES[Config.google_search_engine].format(query))
+    response = get_source(search_engine["url"].format(query))
     HelperFunctions.increment_search_engine()
     wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
     time.sleep(wait_time)
+
     try:
-        stats_text = response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_STATS, first=True).text
+        if search_engine["identifier_stats"] is not None:
+            stats_text = response.html.find(search_engine["identifier_stats"], first=True).text
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # Extracting the no of results from the stats_text
@@ -51,7 +54,7 @@ def scrape_google(word):
         print(f"number of search results for {word}: {number_of_search_results}")
 
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
-    results = list(response.html.find(Config.GOOGLE_SCRAPE_IDENTIFIER_SECTION))
+    results = list(response.html.find(search_engine["identifier_section"]))
 
     ret = [number_of_search_results]
     for result in results:
@@ -59,18 +62,18 @@ def scrape_google(word):
         text = ""
         title = ""
         try:
-            link = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_LINK, first=True).attrs['href']
+            link = result.find(search_engine["identifier_link"], first=True).attrs['href']
         except AttributeError as e:
             HelperFunctions.print_identifier_error("link", e, link)
         # Filtering out any links in the blacklist
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
             try:
-                title = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TITLE, first=True).text
+                title = result.find(search_engine["identifier_title"], first=True).text
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("title", e, link)
 
             try:
-                text = result.find(Config.GOOGLE_SCRAPE_IDENTIFIER_TEXT, first=True).text
+                text = result.find(search_engine["identifier_text"], first=True).text
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("text", e, link)
 
