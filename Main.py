@@ -10,7 +10,7 @@ graph = nx.Graph()
 lexeme_dictionary = {}
 
 if Config.USE_TEST_DATA:
-    word_list = ["Bamboozled", "Risk", "Shipping", "Packaging"]
+    word_list = ["Bamboozled"]
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
     # So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
@@ -54,13 +54,13 @@ for key in lexeme_dictionary:
     graph.add_node(key)
     # Scraping google, the first array item is the number of results
     scrape_results = APIs.scrape_google(key)[1:]
-    number_of_google_scholar_results = APIs.google_scholar_word_popularity(key)
     # Using the scrape results to find related keywords
     linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, key)
     for word in linking_keywords:
         graph.add_node(word)
         graph.add_edge(key, word)
-        HelperFunctions.recursively_scrape_word(word, lexeme_dictionary, graph)
+        if Config.GOOGLE_SCRAPE_DO_RECURSION:
+            HelperFunctions.recursively_scrape_word(word, lexeme_dictionary, graph)
     if Config.DEBUG:
         print(f"The keywords relating to {key} are {linking_keywords}")
 

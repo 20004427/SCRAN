@@ -6,7 +6,7 @@ google_search_engine = 0
 
 # ____ CONSTANTS ____
 DEBUG = True
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 USE_POPULARITY_ON_INPUT = False
 PATH_TO_WORD_LIST = "words.xlsx"
 WORD_LIST_SHEET_NAME = "Combined Words"
@@ -17,6 +17,12 @@ GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
                            "https://www.google.",
                            "https://maps.",
                            "https://support."]
+
+# This is the css attribute given to results by google
+# This is subject to change, maybe worth investigating a better way to do this?
+# TODO: Is there a better way to find the articles in a google search result
+#   And extract the text from them? See issue #6 https://github.com/20004427/SCRAN/issues/6
+
 # The different search engines have different html classes/ id's.
 # So using a dictionary to store them.
 # Note: you don't have to use keys to access items, you can
@@ -38,7 +44,7 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                   "identifier_stats": ".sb_count",
                                   "identifier_text": ".b_lineclamp2"},
                          "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
-                                        "identifier_section": ".yQDlj3B5DI5YO8c8Ulio",
+                                        "identifier_section": ".links_deep",
                                         "identifier_title": "span",
                                         "identifier_link": ".LnpumSThxEWMIsDdAT17 a",
                                         "identifier_stats": None,
@@ -60,16 +66,8 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
 SCRAPE_MIN_DELAY = 0
 SCRAPE_MAX_DELAY = 5
 GOOGLE_SCRAPE_NO_SITES = 10
-GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 5
-# This is the css attribute given to results by google
-# This is subject to change, maybe worth investigating a better way to do this?
-# TODO: Is there a better way to find the articles in a google search result
-#   And extract the text from them? See issue #6 https://github.com/20004427/SCRAN/issues/6
-GOOGLE_SCRAPE_IDENTIFIER_SECTION = ".tF2Cxc"
-GOOGLE_SCRAPE_IDENTIFIER_TITLE = "h3"
-GOOGLE_SCRAPE_IDENTIFIER_LINK = ".yuRUbf a"
-GOOGLE_SCRAPE_IDENTIFIER_TEXT = ".VwiC3b"
-GOOGLE_SCRAPE_IDENTIFIER_STATS = "#result-stats"
+GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 2
+GOOGLE_SCRAPE_DO_RECURSION = False
 
 # ___ GOOGLE SCHOLAR ___
 GOOGLE_SCHOLAR_IDENTIFIER_STATS = ".gs_ab_mdw"
