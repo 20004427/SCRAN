@@ -35,7 +35,7 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                     "identifier_section": ".tF2Cxc",
                                     "identifier_title": "h3",
                                     "identifier_link": ".yuRUbf a",
-                                    "identifier_stats": "#result-stats",
+                                    "identifier_stats": "result-stats",
                                     "identifier_text": ".VwiC3b"},
                          "bing": {"url": "https://www.bing.com/search?q={}",
                                   "identifier_section": ".b_algo",

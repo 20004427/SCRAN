@@ -2,7 +2,12 @@ import requests
 import urllib
 import time
 import random
-from requests_html import HTMLSession
+import pyquery
+import html5lib
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 import Config
 import HelperFunctions
@@ -29,7 +34,7 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[Config.google_search_engine]
+    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[1]
     stats_text = ""
     number_of_search_results = None
     query = urllib.parse.quote_plus("\"Supply chain\" " + word)
@@ -38,9 +43,13 @@ def scrape_google(word):
     wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
     time.sleep(wait_time)
 
+    soup = BeautifulSoup(response.page_source, features="html.parser")
+
     try:
         if search_engine["identifier_stats"] is not None:
-            stats_text = response.html.find(search_engine["identifier_stats"], first=True).text
+            #stats_text = soup.find("div", id="result-stats")
+            stats_text = soup.find("span", class_="sb_count")
+            print(stats_text)
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # Extracting the no of results from the stats_text
@@ -137,9 +146,9 @@ def get_source(url):
     :return: (object | requests_html)
     """
     try:
-        session = HTMLSession()
-        response = session.get(url)
-        return response
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        driver.get(url)
+        return driver
     except requests.exceptions.RequestException as e:
         if Config.DEBUG:
             print(f"[ERROR] {e.strerror}")

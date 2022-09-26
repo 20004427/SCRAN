@@ -12,3 +12,6 @@ __pycache__/
 *.NET
 # pylot graph
 output.png
+
+# Other
+*.exe

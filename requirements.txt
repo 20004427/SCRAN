@@ -6,4 +6,7 @@ pattern~=3.6
 openpyxl
 networkx~=2.8.5
 matplotlib~=3.5.2
-keybert
+keybert~=0.6.0
+bs4~=0.0.1
+beautifulsoup4~=4.11.1
+webdriver-manager
