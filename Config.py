@@ -32,10 +32,10 @@ GOOGLE_SCRAPE_BLACKLIST = ["https://www.youtube.",
 #               identifier_link:, identifier_text:, identifier_stats:}}
 # None means that it doesn't exist for that search engine
 SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}",
-                                    "identifier_section": ".tF2Cxc",
+                                    "identifier_section": ["div", "class", "tF2Cxc"],
                                     "identifier_title": "h3",
-                                    "identifier_link": ".yuRUbf a",
-                                    "identifier_stats": "result-stats",
+                                    "identifier_link": ["div", "class", "yuRUbf"],
+                                    "identifier_stats": ["div", "id", "result-stats"],
                                     "identifier_text": ".VwiC3b"},
                          "bing": {"url": "https://www.bing.com/search?q={}",
                                   "identifier_section": ".b_algo",

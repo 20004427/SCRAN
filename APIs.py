@@ -34,8 +34,7 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[1]
-    stats_text = ""
+    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[0]
     number_of_search_results = None
     query = urllib.parse.quote_plus("\"Supply chain\" " + word)
     response = get_source(search_engine["url"].format(query))
@@ -45,11 +44,11 @@ def scrape_google(word):
 
     soup = BeautifulSoup(response.page_source, features="html.parser")
 
+    identifier_stats = search_engine["identifier_stats"]
+    stats_text = ""
     try:
-        if search_engine["identifier_stats"] is not None:
-            #stats_text = soup.find("div", id="result-stats")
-            stats_text = soup.find("span", class_="sb_count")
-            print(stats_text)
+        if identifier_stats is not None:
+            stats_text = HelperFunctions.extract_from_soup(soup, identifier_stats).text
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # Extracting the no of results from the stats_text
@@ -63,7 +62,8 @@ def scrape_google(word):
         print(f"number of search results for {word}: {number_of_search_results}")
 
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
-    results = list(response.html.find(search_engine["identifier_section"]))
+    identifier_section = search_engine["identifier_section"]
+    results = HelperFunctions.extract_from_soup(soup, identifier_section, find_all=True)
 
     ret = [number_of_search_results]
     for result in results:
@@ -71,7 +71,9 @@ def scrape_google(word):
         text = ""
         title = ""
         try:
-            link = result.find(search_engine["identifier_link"], first=True).attrs['href']
+            identifier_link = search_engine["identifier_link"]
+            link_section = HelperFunctions.extract_from_soup(result, identifier_link)
+            link = link_section.find("a").attrs['href']
         except AttributeError as e:
             HelperFunctions.print_identifier_error("link", e, link)
         # Filtering out any links in the blacklist

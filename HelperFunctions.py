@@ -201,3 +201,24 @@ def increment_search_engine():
         Config.google_search_engine = 0
     else:
         Config.google_search_engine += 1
+
+
+def extract_from_soup(soup, input_, find_all=False):
+    """
+    HelperFunction - removes duplicate code from APIs
+
+    :param soup: (BeautifulSoup)
+    :param input_: (Array| String) ["html element", "class or id", "identifier_name"]
+    :param find_all: (Boolean)
+    :return: array of html elements
+    """
+    if find_all:
+        if input_[1] == "id":
+            return soup.find_all(input_[0], id=input_[2])
+        else:
+            return soup.find_all(input_[0], class_=input_[2])
+    else:
+        if input_[1] == "id":
+            return soup.find(input_[0], id=input_[2])
+        else:
+            return soup.find(input_[0], class_=input_[2])
