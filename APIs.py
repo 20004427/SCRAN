@@ -34,7 +34,9 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine = list(Config.SCRAPE_SEARCH_ENGINES.values())[0]
+    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[0]
+    # We can do this since the values will be unique
+    search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
     number_of_search_results = None
     query = urllib.parse.quote_plus("\"Supply chain\" " + word)
     response = get_source(search_engine["url"].format(query))
@@ -52,12 +54,11 @@ def scrape_google(word):
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # Extracting the no of results from the stats_text
-    # We know it should always be the 2nd string in the list when split.
-    # raw, the stats_text is:
-    #   About 940,000 results
-    #   (0.22 seconds)
     if stats_text != "":
-        number_of_search_results = int("".join(stats_text.split()[1].split(",")))
+        if search_engine_name == "bing":
+            number_of_search_results = int("".join(stats_text.split()[0].split(",")))
+        else:
+            number_of_search_results = int("".join(stats_text.split()[1].split(",")))
     if Config.DEBUG:
         print(f"number of search results for {word}: {number_of_search_results}")
 
@@ -72,7 +73,13 @@ def scrape_google(word):
         title = ""
         try:
             identifier_link = search_engine["identifier_link"]
-            link_section = HelperFunctions.extract_from_soup(result, identifier_link)
+            for i in identifier_link:
+                if len(i) == 1:
+                    link_section = result.select_one(i[0])
+                elif i[1] is None:
+                    link_section = result.find(i[0])
+                else:
+                    link_section = HelperFunctions.extract_from_soup(result, i)
             link = link_section.find("a").attrs['href']
         except AttributeError as e:
             HelperFunctions.print_identifier_error("link", e, link)
@@ -90,7 +97,6 @@ def scrape_google(word):
             try:
                 identifier_text = search_engine["identifier_text"]
                 text = HelperFunctions.extract_from_soup(result, identifier_text).text
-                print(text)
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("text", e, link)
 
