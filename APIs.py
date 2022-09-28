@@ -79,12 +79,18 @@ def scrape_google(word):
         # Filtering out any links in the blacklist
         if len([1 for i in Config.GOOGLE_SCRAPE_BLACKLIST if link.startswith(i)]) == 0:
             try:
-                title = result.find(search_engine["identifier_title"], first=True).text
+                identifier_title = search_engine["identifier_title"]
+                if identifier_title[1] is None:
+                    title = result.find(identifier_title[0]).text
+                else:
+                    title = HelperFunctions.extract_from_soup(result, identifier_title).text
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("title", e, link)
 
             try:
-                text = result.find(search_engine["identifier_text"], first=True).text
+                identifier_text = search_engine["identifier_text"]
+                text = HelperFunctions.extract_from_soup(result, identifier_text).text
+                print(text)
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("text", e, link)
 
