@@ -56,11 +56,11 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                    "identifier_stats": ["span", "class", ".fz-14"],
                                    "identifier_text": ["span", "class", "fc-falcon"]},
                          "dogpile": {"url": "https://dogpile.com/serp?q={}",
-                                     "identifier_section": ".web-bing__result",
-                                     "identifier_title": "a",
-                                     "identifier_link": ".web-bing__title",
+                                     "identifier_section": ["div", "class", "web-bing__result"],
+                                     "identifier_title": ["a", "class", "web-bing__title"],
+                                     "identifier_link": [["web-bing__title"]],
                                      "identifier_stats": None,
-                                     "identifier_text": ".web-bing__description"}
+                                     "identifier_text": ["span", "class", "web-bing__description"]}
                          }
 # Delay is in seconds
 SCRAPE_MIN_DELAY = 0

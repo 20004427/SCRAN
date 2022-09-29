@@ -34,7 +34,7 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[1]
+    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[4]
     # We can do this since the values will be unique
     search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
     number_of_search_results = None
@@ -73,8 +73,14 @@ def scrape_google(word):
         title = ""
         try:
             identifier_link = search_engine["identifier_link"]
-            for i in identifier_link:
-                link_section = HelperFunctions.extract_from_soup(result, i)
+            # Special exception for dogpile.
+            # The structure of dogpile is very different from the other search engines,
+            # That there wasn't any easy way of using the generic method
+            if search_engine_name == "dogpile":
+                link_section = result
+            else:
+                for i in identifier_link:
+                    link_section = HelperFunctions.extract_from_soup(result, i)
             link = link_section.find("a").attrs['href']
         except AttributeError as e:
             HelperFunctions.print_identifier_error("link", e, link)
@@ -94,11 +100,13 @@ def scrape_google(word):
                 text = HelperFunctions.extract_from_soup(result, identifier_text).text
             except AttributeError as e:
                 HelperFunctions.print_identifier_error("text", e, link)
-
-            item = {'title': title,
-                    'link': link,
-                    'text': text}
-            ret.append(item)
+            if title is not None and \
+                    link is not None and \
+                    text is not None:
+                item = {'title': title,
+                        'link': link,
+                        'text': text}
+                ret.append(item)
 
     # restricting the scrape to the first 10 sites
     if len(ret) > Config.GOOGLE_SCRAPE_NO_SITES:
