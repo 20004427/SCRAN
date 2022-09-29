@@ -34,7 +34,7 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[2]
+    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[1]
     # We can do this since the values will be unique
     search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
     number_of_search_results = None
@@ -74,12 +74,7 @@ def scrape_google(word):
         try:
             identifier_link = search_engine["identifier_link"]
             for i in identifier_link:
-                if len(i) == 1:
-                    link_section = result.select_one(i[0])
-                elif i[1] is None:
-                    link_section = result.find(i[0])
-                else:
-                    link_section = HelperFunctions.extract_from_soup(result, i)
+                link_section = HelperFunctions.extract_from_soup(result, i)
             link = link_section.find("a").attrs['href']
         except AttributeError as e:
             HelperFunctions.print_identifier_error("link", e, link)

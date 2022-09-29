@@ -213,12 +213,20 @@ def extract_from_soup(soup, input_, find_all=False):
     :return: array of html elements
     """
     if find_all:
-        if input_[1] == "id":
+        if len(input_) == 1:
+            return soup.select(input_[0])
+        elif input_[1] is None:
+            return soup.find_all(input_[0])
+        elif input_[1] == "id":
             return soup.find_all(input_[0], id=input_[2])
         else:
             return soup.find_all(input_[0], class_=input_[2])
     else:
-        if input_[1] == "id":
+        if len(input_) == 1:
+            return soup.select_one(input_[0])
+        elif input_[1] is None:
+            return soup.find(input_[0])
+        elif input_[1] == "id":
             return soup.find(input_[0], id=input_[2])
         else:
             return soup.find(input_[0], class_=input_[2])
