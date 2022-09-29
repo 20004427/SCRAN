@@ -34,7 +34,7 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[0]
+    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[2]
     # We can do this since the values will be unique
     search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
     number_of_search_results = None
