@@ -2,8 +2,6 @@ import requests
 import urllib
 import time
 import random
-import pyquery
-import html5lib
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -34,11 +32,11 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[4]
+    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[Config.google_search_engine]
     # We can do this since the values will be unique
     search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
     number_of_search_results = None
-    query = urllib.parse.quote_plus("\"Supply chain\" " + word)
+    query = urllib.parse.quote_plus(f"\"Supply chain {word}\"")
     response = get_source(search_engine["url"].format(query))
     HelperFunctions.increment_search_engine()
     wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
@@ -109,7 +107,7 @@ def scrape_google(word):
                 ret.append(item)
 
     # restricting the scrape to the first 10 sites
-    if len(ret) > Config.GOOGLE_SCRAPE_NO_SITES:
+    if len(ret) - 1 > Config.GOOGLE_SCRAPE_NO_SITES:
         ret = ret[:Config.GOOGLE_SCRAPE_NO_SITES]
     return ret
 

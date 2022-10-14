@@ -36,37 +36,37 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                     "identifier_title": ["h3", None],
                                     "identifier_link": [["div", "class", "yuRUbf"]],
                                     "identifier_stats": ["div", "id", "result-stats"],
-                                    "identifier_text": ["div", "class", "VwiC3b"]},
+                                    "identifier_text": [".VwiC3b > span"]},
                          "bing": {"url": "https://www.bing.com/search?q={}",
                                   "identifier_section": ["li", "class", "b_algo"],
                                   "identifier_title": ["h2", None],
                                   "identifier_link": [[".b_title > h2"], ["h2", None]],
                                   "identifier_stats": ["span", "class", "sb_count"],
                                   "identifier_text": ["p", "class", "b_lineclamp2"]},
-                         "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
-                                        "identifier_section": ["article", "class", "yQDlj3B5DI5YO8c8Ulio"],
-                                        "identifier_title": ["span", "class", "EKtkFWMYpwzMKOYr0GYm"],
-                                        "identifier_link": [["h2", "class", "LnpumSThxEWMIsDdAT17"]],
-                                        "identifier_stats": None,
-                                        "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"]},
+                         # "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
+                         #                "identifier_section": ["article", "class", "yQDlj3B5DI5YO8c8Ulio"],
+                         #                "identifier_title": ["span", "class", "EKtkFWMYpwzMKOYr0GYm"],
+                         #                "identifier_link": [["h2", "class", "LnpumSThxEWMIsDdAT17"]],
+                         #                "identifier_stats": None,
+                         #                "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"]},
                          "yahoo": {"url": "https://nz.search.yahoo.com/search?q={}",
                                    "identifier_section": ["div", "class", "algo-sr"],
                                    "identifier_title": ["h3", "class", "title"],
                                    "identifier_link": [["h3", "class", "title"]],
                                    "identifier_stats": ["span", "class", ".fz-14"],
                                    "identifier_text": ["span", "class", "fc-falcon"]},
-                         "dogpile": {"url": "https://dogpile.com/serp?q={}",
-                                     "identifier_section": ["div", "class", "web-bing__result"],
-                                     "identifier_title": ["a", "class", "web-bing__title"],
-                                     "identifier_link": [["web-bing__title"]],
-                                     "identifier_stats": None,
-                                     "identifier_text": ["span", "class", "web-bing__description"]}
+                         # "dogpile": {"url": "https://dogpile.com/serp?q={}",
+                         #             "identifier_section": ["div", "class", "web-bing__result"],
+                         #             "identifier_title": ["a", "class", "web-bing__title"],
+                         #             "identifier_link": [["web-bing__title"]],
+                         #             "identifier_stats": None,
+                         #             "identifier_text": ["span", "class", "web-bing__description"]}
                          }
 # Delay is in seconds
 SCRAPE_MIN_DELAY = 0
 SCRAPE_MAX_DELAY = 5
 GOOGLE_SCRAPE_NO_SITES = 10
-GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 2
+GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 1
 GOOGLE_SCRAPE_DO_RECURSION = False
 
 # ___ GOOGLE SCHOLAR ___
@@ -85,3 +85,9 @@ BLACKLIST_KEYWORDS = ["supply",
 # ____ Pajek ____
 PAJEK_ORIGINAL_NODE_COLOR = "Green"
 PAJEK_OTHER_NODE_COLOR = "Purple"
+
+# Global variables
+# matplotlib bar graph requires two arrays
+# one for the x axis and one for the y axis.
+words_to_graph = []
+values_to_graph = []

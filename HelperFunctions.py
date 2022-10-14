@@ -91,7 +91,11 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
         print(f"the learning algorithm got: {keywords}")
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
-    sorted(keyword_counts, key=lambda x: x[1], reverse=True)
+    try:
+        sorted(keyword_counts, key=lambda x: x[1], reverse=True)
+    except Exception as e:
+        print_traceback_location(e)
+        print(keyword_counts)
     ret_keywords = [i for i in keyword_counts]
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
@@ -186,7 +190,11 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     if n > Config.GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT:
         return False
     graph.add_node(word)
-    scrape_results = APIs.scrape_google(word)[1:]
+    scrape_output = APIs.scrape_google(word)
+    scrape_results = scrape_output[1:]
+    number_of_search_results = scrape_output[0]
+    Config.words_to_graph.append(word)
+    Config.values_to_graph.append(number_of_search_results)
     linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
     for w in linking_keywords:
         if recursively_scrape_word(w, lexeme_dictionary, graph, n+1):
