@@ -117,10 +117,7 @@ def f(x_):
 
 x = np.linspace(0, len(Config.words_to_graph), 100)
 y = f(x)
-pt.plot(x, y)
 point_bottom_right = (len(Config.words_to_graph), 0)
-pt.plot(point_bottom_right[0], point_bottom_right[1], 'bo')
-pt.show()
 # Need to find the shortest distance from the bottom
 # right corner of the graph (which is (len(Config.words_to_graph), 0))
 # to the exponential curve
@@ -148,7 +145,7 @@ min_x = min_x * (x_max - x_min) + x_min
 min_y = min_y * (y_max - y_min) + y_min
 
 pt.plot(min_x, min_y, 'ro')
-pt.plot(point_bottom_right, "ro")
+pt.plot(point_bottom_right[0], point_bottom_right[1], "ro")
 pt.plot([point_bottom_right[0], min_x],
         [point_bottom_right[1], min_y],
         'r-')
