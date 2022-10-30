@@ -6,8 +6,11 @@ google_search_engine = 0
 
 # ____ CONSTANTS ____
 DEBUG = True
-DEBUG_TEXT_COLOR = "\u001b[36m"
-PRINT_TEXT_ENDC = "\033[0m"
+# Using ANSI color
+DEBUG_TEXT_COLOR = "\033[0;36m"  # Cyan
+ERROR_TEXT_COLOR = "\033[0;33m"  # Yellow NONE FATAL (so not red)
+WARNING_TEXT_COLOR = "\033[0;35m"  # Purple
+PRINT_TEXT_ENDC = "\033[00m"
 USE_TEST_DATA = True
 USE_POPULARITY_ON_INPUT = False
 PATH_TO_WORD_LIST = "words.xlsx"

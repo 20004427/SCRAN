@@ -66,7 +66,7 @@ def scrape_google(word):
         else:
             number_of_search_results = int("".join(stats_text.split()[1].split(",")))
     if Config.DEBUG:
-        print(f"number of search results for {word}: {number_of_search_results}")
+        HelperFunctions.print_debug(f"number of search results for {word}: {number_of_search_results}")
 
     # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
     identifier_section = search_engine["identifier_section"]
@@ -135,7 +135,6 @@ def google_scholar_word_popularity(word):
     number_of_google_scholar_results = 0
     try:
         stats_text = response.html.find(Config.GOOGLE_SCHOLAR_IDENTIFIER_STATS)
-        print(response.html)
     except AttributeError as e:
         HelperFunctions.print_identifier_error("stats", e)
     # unlike the google search results, google scholar uses a class instead of an id for the
@@ -158,7 +157,8 @@ def google_scholar_word_popularity(word):
                 HelperFunctions.print_identifier_error("stats", e)
 
     if Config.DEBUG:
-        print(f"number of search results for \"supply chain\" {word}: {number_of_google_scholar_results}")
+        HelperFunctions.print_debug("number of search results for \"supply chain\" "
+                                    f"{word}: {number_of_google_scholar_results}")
     return number_of_google_scholar_results
 
 
@@ -174,5 +174,5 @@ def get_source(url):
         return driver
     except requests.exceptions.RequestException as e:
         if Config.DEBUG:
-            print(f"[ERROR] {e.strerror}")
+            HelperFunctions.print_error(e.strerror)
         return -1

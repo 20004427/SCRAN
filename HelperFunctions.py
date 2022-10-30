@@ -21,6 +21,25 @@ def read_keywords(path, sheet_name):
     return data_frame
 
 
+def print_identifier_error(name, error, link="unknown"):
+    """
+    The traceback package will print in red text.
+    These aren't fatal errors, so I didn't want them to be red.
+    Instead, defining my own traceback prints.
+
+    :param name: (string) name of the identifier. i.e. Link
+    :param error: (Error | object) Error being caught
+    :param link: (String) Optional. Link of the site
+    :return: (NONE)
+    """
+    # The traceback package will print in red text.
+    # These aren't fatal errors, so I didn't want them to be red.
+    # Instead, defining my own traceback prints.
+    if Config.DEBUG:
+        print_error(f"{get_traceback_location(error)} {error.__str__()}")
+    print_warning(f"Identifier {name} is invalid for the website {link}.")
+
+
 def print_traceback_location(exception):
     """
     A method to print traceback location.
@@ -40,12 +59,34 @@ def print_traceback_location(exception):
 def print_debug(string):
     """
     Simple function to print coloured text.
-    Makes it easier to see debug statements.
+    Makes it easier to see debug print statements.
 
     :param string:
     :return: (NONE)
     """
     print(f"{Config.DEBUG_TEXT_COLOR}[DEBUG] {string} {Config.PRINT_TEXT_ENDC}")
+
+
+def print_error(string):
+    """
+    Simple function to print coloured text.
+    Makes it easier to see error print statements.
+
+    :param string:
+    :return: (NONE)
+    """
+    print(f"{Config.ERROR_TEXT_COLOR}[ERROR] {string} {Config.PRINT_TEXT_ENDC}")
+
+
+def print_warning(string):
+    """
+    Simple function to print coloured text.
+    Makes it easier to see warning print statements.
+
+    :param string:
+    :return: (NONE)
+    """
+    print(f"{Config.WARNING_TEXT_COLOR}[WARNING] {string} {Config.PRINT_TEXT_ENDC}")
 
 
 def get_traceback_location(exception):
@@ -173,15 +214,6 @@ def cleanup_graph(graph):
             for neighbor in node_neighbors:
                 graph.add_edge(new_node, neighbor)
             graph.remove_node(node)
-
-
-def print_identifier_error(name, error, link="unknown"):
-    # The traceback package will print in red text.
-    # These aren't fatal errors, so I didn't want them to be red.
-    # Instead, defining my own traceback prints.
-    if Config.DEBUG:
-        print(f"[ERROR] {get_traceback_location(error)} {error.__str__()}")
-    print(f"[WARNING] Identifier {name} is invalid for the website {link}.")
 
 
 def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
