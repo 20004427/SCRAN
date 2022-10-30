@@ -138,12 +138,16 @@ y_normalized = (y - y_min) / (y_max - y_min)
 min_x, min_y, min_distance, glob_min_index = HelperFunctions.min_distance(x_normalized, y_normalized, (1, 0))
 print(f"minimum indexes: {min_x} {min_y} {glob_min_index}")
 print(f"distance: {min_distance}")
-pt.plot(min_x, min_y, 'bo')
-pt.plot([1, min_x],
-        [0, min_y],
-        'b-')
-pt.plot(x_normalized, y_normalized)
 
-# pt.plot(point_on_curve[0], point_on_curve[1], 'yo')
-# https://kitchingroup.cheme.cmu.edu/blog/2013/02/14/Find-the-minimum-distance-from-a-point-to-a-curve/
+# Un-normalizing
+min_x = min_x * (x_max - x_min) + x_min
+min_y = min_y * (y_max - y_min) + y_min
+
+pt.plot(min_x, min_y, 'ro')
+pt.plot(point_bottom_right, "ro")
+pt.plot([point_bottom_right[0], min_x],
+        [point_bottom_right[1], min_y],
+        'r-')
+pt.plot(x, y)
+
 pt.show()
