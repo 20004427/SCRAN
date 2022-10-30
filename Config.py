@@ -6,6 +6,8 @@ google_search_engine = 0
 
 # ____ CONSTANTS ____
 DEBUG = True
+DEBUG_TEXT_COLOR = "\u001b[36m"
+PRINT_TEXT_ENDC = "\033[0m"
 USE_TEST_DATA = True
 USE_POPULARITY_ON_INPUT = False
 PATH_TO_WORD_LIST = "words.xlsx"

@@ -28,8 +28,9 @@ else:
     word_list = HelperFunctions.read_keywords(Config.PATH_TO_WORD_LIST, Config.WORD_LIST_SHEET_NAME)
     if Config.DEBUG:
         # Printing the first 10 rows of the df
-        print("Word list:")
-        print(word_list[:10])
+        HelperFunctions.print_debug("Word list:")
+        for i in word_list[:10]:
+            HelperFunctions.print_debug(f"\t {i}")
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
     # So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
@@ -70,7 +71,7 @@ for key in lexeme_dictionary:
         if Config.GOOGLE_SCRAPE_DO_RECURSION:
             HelperFunctions.recursively_scrape_word(word, lexeme_dictionary, graph)
     if Config.DEBUG:
-        print(f"The keywords relating to {key} are {linking_keywords}")
+        HelperFunctions.print_debug(f"The keywords relating to {key} are {linking_keywords}")
 
 HelperFunctions.cleanup_graph(graph)
 # Output
@@ -81,7 +82,8 @@ pt.show()
 HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
 
 Config.values_to_graph.sort()
-print(Config.values_to_graph)
+if Config.DEBUG:
+    HelperFunctions.print_debug(f"Values to graph: {Config.values_to_graph}")
 # Normalizing the values
 max_value = max(Config.values_to_graph)
 min_value = min(Config.values_to_graph)
@@ -105,7 +107,8 @@ smallest_none_zero = min(list(filter(lambda x: x > 0, values_to_graph)))
 non_zero_values_y = np.array([i if i != 0 else smallest_none_zero for i in values_to_graph])
 # Now fitting the data to a "smooth" exponential curve
 fit = np.polyfit(np.array(numeric_x), np.log(non_zero_values_y), 1)
-print(fit)
+if Config.DEBUG:
+    HelperFunctions.print_debug(fit)
 
 
 def f(x_):
@@ -136,8 +139,9 @@ y_normalized = (y - y_min) / (y_max - y_min)
 # finding the shortest distance from the point to the curve
 
 min_x, min_y, min_distance, glob_min_index = HelperFunctions.min_distance(x_normalized, y_normalized, (1, 0))
-print(f"minimum indexes: {min_x} {min_y} {glob_min_index}")
-print(f"distance: {min_distance}")
+if Config.DEBUG:
+    HelperFunctions.print_debug(f"minimum indexes: {min_x} {min_y} {glob_min_index}")
+    HelperFunctions.print_debug(f"distance: {min_distance}")
 
 # Un-normalizing
 min_x = min_x * (x_max - x_min) + x_min
@@ -151,3 +155,5 @@ pt.plot([point_bottom_right[0], min_x],
 pt.plot(x, y)
 
 pt.show()
+
+

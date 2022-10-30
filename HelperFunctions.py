@@ -37,6 +37,17 @@ def print_traceback_location(exception):
         traceback = traceback.tb_next
 
 
+def print_debug(string):
+    """
+    Simple function to print coloured text.
+    Makes it easier to see debug statements.
+
+    :param string:
+    :return: (NONE)
+    """
+    print(f"{Config.DEBUG_TEXT_COLOR}[DEBUG] {string} {Config.PRINT_TEXT_ENDC}")
+
+
 def get_traceback_location(exception):
     """
     A method to get traceback location.
