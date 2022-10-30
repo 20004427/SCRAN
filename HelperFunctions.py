@@ -1,12 +1,12 @@
 import pandas
 import keybert
-
 import APIs
 import Config
-from pattern.text.en import lexeme
-
 import Config
 import HelperFunctions
+import numpy as np
+from pattern.text.en import lexeme
+from scipy.signal import argrelmin
 
 
 def read_keywords(path, sheet_name):
@@ -238,3 +238,33 @@ def extract_from_soup(soup, input_, find_all=False):
             return soup.find(input_[0], id=input_[2])
         else:
             return soup.find(input_[0], class_=input_[2])
+
+
+def distance(x0, y0, x1, y1):
+    """
+    Computes the distance between two points
+
+    :param x0: (double)
+    :param y0: (double)
+    :param x1: (double)
+    :param y1: (double)
+    :return: (double) distance between the two points
+    """
+    x_distance = x0 - x1
+    y_distance = y0 - y1
+    return np.sqrt(x_distance**2 + y_distance**2)
+
+
+def min_distance(x, y, point):
+    """
+    computes the shortest distance between a curve and a point.
+
+    :param x: (np.linespace) x domain
+    :param y: (np.array) f(x)
+    :param point: [x, y]
+    :return:
+    """
+    distances = [distance(x[i], y[i], point[0], point[1]) for i in range(len(x))]
+    print(f"number of distances: {len(distances)}")
+    min_index = distances.index(min(distances))
+    return x[min_index], y[min_index], distances, min_index

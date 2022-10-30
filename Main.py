@@ -4,7 +4,6 @@ import HelperFunctions
 import networkx as nx
 import matplotlib.pyplot as pt
 import numpy as np
-from scipy.interpolate import make_interp_spline
 from pattern.text.en import lexeme
 
 word_list = []
@@ -87,17 +86,16 @@ print(Config.values_to_graph)
 max_value = max(Config.values_to_graph)
 min_value = min(Config.values_to_graph)
 values_to_graph = [(i - min_value) / (max_value - min_value) for i in Config.values_to_graph]
-fig, axs = pt.subplots(2, 1)
 
 # Graphing the number of search results
 # Bar graph - for visualization purposes
-axs[0, 0].bar(Config.words_to_graph, values_to_graph, color='r', alpha=0.25)
+pt.bar(Config.words_to_graph, values_to_graph, color='r', alpha=0.25)
 # Numeric only exponential graph.
 # Each word is given a number between 0 and len(words)
 # Since the data is already sorted, the x value corresponds to the index in the
 # words array, that is Config.values_to_graph
 numeric_x = list(range(0, len(Config.words_to_graph)))
-axs[0, 0].plot(numeric_x, values_to_graph)
+pt.plot(numeric_x, values_to_graph)
 pt.show()
 
 # now fitting the data to an exponential curve
@@ -108,13 +106,44 @@ non_zero_values_y = np.array([i if i != 0 else smallest_none_zero for i in value
 # Now fitting the data to a "smooth" exponential curve
 fit = np.polyfit(np.array(numeric_x), np.log(non_zero_values_y), 1)
 print(fit)
+
+
+def f(x_):
+    return fit[1] + fit[0] * np.exp(x_)
+
+
 x = np.linspace(0, len(Config.words_to_graph), 100)
-y = fit[1] + fit[0] * np.exp(x)
-
-axs[1, 0].plot(x, y)
+y = f(x)
+pt.plot(x, y)
+point_bottom_right = (len(Config.words_to_graph), 0)
+pt.plot(point_bottom_right[0], point_bottom_right[1], 'bo')
 pt.show()
-
 # Need to find the shortest distance from the bottom
-# right corner of the graph (which is (1, 0))
+# right corner of the graph (which is (len(Config.words_to_graph), 0))
 # to the exponential curve
+# Data needs to be normalized
+
+x_max = max(x)
+x_min = min(x)
+x_normalized = (x-x_min) / (x_max - x_min)
+
+y_min = min(y)
+y_max = max(y)
+y_normalized = (y - y_min) / (y_max - y_min)
+
+
+# The following functions are required for
+# finding the shortest distance from the point to the curve
+
+min_x, min_y, min_distance, glob_min_index = HelperFunctions.min_distance(x_normalized, y_normalized, (1, 0))
+print(f"minimum indexes: {min_x} {min_y} {glob_min_index}")
+print(f"distance: {min_distance}")
+pt.plot(min_x, min_y, 'bo')
+pt.plot([1, min_x],
+        [0, min_y],
+        'b-')
+pt.plot(x_normalized, y_normalized)
+
+# pt.plot(point_on_curve[0], point_on_curve[1], 'yo')
 # https://kitchingroup.cheme.cmu.edu/blog/2013/02/14/Find-the-minimum-distance-from-a-point-to-a-curve/
+pt.show()
