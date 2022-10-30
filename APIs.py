@@ -54,7 +54,15 @@ def scrape_google(word):
     # Extracting the no of results from the stats_text
     if stats_text != "":
         if search_engine_name == "bing":
-            number_of_search_results = int("".join(stats_text.split()[0].split(",")))
+            # For Bing sometimes, the stats text is in the form "About 999,000,000 results.
+            # Other times it is "999,000,000 results. So handling this case
+            stats_text_split = stats_text.split()
+            if len(stats_text_split) == 3:
+                # "About 999,000,000 results" case
+                number_of_search_results_text = stats_text_split[1]
+            else:
+                number_of_search_results_text = stats_text_split[0]
+            number_of_search_results = int("".join(number_of_search_results_text.split(",")))
         else:
             number_of_search_results = int("".join(stats_text.split()[1].split(",")))
     if Config.DEBUG:
