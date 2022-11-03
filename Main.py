@@ -11,9 +11,12 @@ graph = nx.Graph()
 lexeme_dictionary = {}
 
 if Config.USE_TEST_DATA:
-    # Test data
-    word_list = ["shipping", "factory", "investment", "storage", "shortage", "stock",
-                 "cargo", "employment", "Backhaul", "Category", "Inventory", "Sale"]
+    # Test data - data from the mid-year review
+    word_list = ["Bullwhip", "Stockouts", "Warehousing", "Overstocking", "Panic Buying",
+                 "Pallets", "Packing", "Supplier Reliability", "Raw Materials", "Containers",
+                 "Shipping", "Singapore", "Air Freight", "Los Angeles", "Shanghai", "Auckland",
+                 "Available Equipment & Parts", "Cost", "Available credit", "Cybersecurity",
+                 "Labour", "Absenteeism", "Attrition", "Staff Burnout", "Salary wars", "Strikes"]
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
     # So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
