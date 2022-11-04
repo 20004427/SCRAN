@@ -62,7 +62,7 @@ def scrape_google(word):
             block_check = search_engine["block_check"]
             if block_check is not None:
                 text = HelperFunctions.extract_from_soup(soup, block_check[0])
-                if text is not None and block_check[1] in text:
+                if text is not None:
                     HelperFunctions.print_warning(f"Search engine {search_engine_name} "
                                                   "has blocked this ip!")
                     HelperFunctions.print_warning(f"Adding {search_engine_name} to a "
