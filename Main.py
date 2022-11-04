@@ -17,6 +17,7 @@ if Config.USE_TEST_DATA:
                  "Shipping", "Singapore", "Air Freight", "Los Angeles", "Shanghai", "Auckland",
                  "Available Equipment & Parts", "Cost", "Available credit", "Cybersecurity",
                  "Labour", "Absenteeism", "Attrition", "Staff Burnout", "Salary wars", "Strikes"]
+    word_list = ["Bullwhip", "Stockouts", "Warehousing"]
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
     # So if the key word was "ship" then the lexeme set would be ["shipping", "shipped"]
@@ -83,6 +84,10 @@ nx.draw(graph, with_labels=True, pos=pos)
 pt.savefig("output.png")
 pt.show()
 HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
+
+# It's possible that some of the words are None.
+# Filtering these out.
+Config.values_to_graph = [x for x in Config.values_to_graph if x is not None]
 
 Config.values_to_graph.sort()
 if Config.DEBUG:

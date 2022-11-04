@@ -2,6 +2,8 @@ import requests
 import urllib
 import time
 import random
+
+import selenium.common.exceptions
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -32,46 +34,63 @@ def scrape_google(word):
                       'text': "Hey, that's pretty pog",
                      'title': "The art of pogness"}, ...]
     """
-    search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[Config.google_search_engine]
-    # We can do this since the values will be unique
-    search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
-    number_of_search_results = None
-    query = urllib.parse.quote_plus(f"\"Supply chain {word}\"")
-    response = get_source(search_engine["url"].format(query))
-    HelperFunctions.increment_search_engine()
-    wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
-    time.sleep(wait_time)
+    while True:
+        repeat = False
+        search_engine_name = list(Config.SCRAPE_SEARCH_ENGINES.keys())[Config.google_search_engine]
+        # We can do this since the values will be unique
+        search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
+        number_of_search_results = None
+        query = urllib.parse.quote_plus(f"\"Supply chain {word}\"")
+        response = get_source(search_engine["url"].format(query))
+        if response == -1:
+            repeat = True
+        print(search_engine)
+        Config.increment_search_engine()
+        wait_time = random.randrange(Config.SCRAPE_MIN_DELAY, Config.SCRAPE_MAX_DELAY)
+        time.sleep(wait_time)
 
-    soup = BeautifulSoup(response.page_source, features="html.parser")
+        soup = BeautifulSoup(response.page_source, features="html.parser")
 
-    identifier_stats = search_engine["identifier_stats"]
-    stats_text = ""
-    try:
-        if identifier_stats is not None:
-            stats_text = HelperFunctions.extract_from_soup(soup, identifier_stats).text
-    except AttributeError as e:
-        HelperFunctions.print_identifier_error("stats", e)
-    # Extracting the no of results from the stats_text
-    if stats_text != "":
-        if search_engine_name == "bing":
-            # For Bing sometimes, the stats text is in the form "About 999,000,000 results.
-            # Other times it is "999,000,000 results. So handling this case
-            stats_text_split = stats_text.split()
-            if len(stats_text_split) == 3:
-                # "About 999,000,000 results" case
-                number_of_search_results_text = stats_text_split[1]
+        identifier_stats = search_engine["identifier_stats"]
+        stats_text = ""
+        try:
+            if identifier_stats is not None:
+                stats_text = HelperFunctions.extract_from_soup(soup, identifier_stats).text
+        except AttributeError as e:
+            HelperFunctions.print_identifier_error("stats", e)
+            # Checking to see if the ip has been blocked
+            block_check = search_engine["block_check"]
+            if block_check is not None:
+                text = HelperFunctions.extract_from_soup(soup, block_check[0])
+                if text is not None and block_check[1] in text:
+                    HelperFunctions.print_warning(f"Search engine {search_engine_name} "
+                                                  "has blocked this ip!")
+                    HelperFunctions.print_warning(f"Adding {search_engine_name} to a "
+                                                  "blacklist for the remainder of this run.")
+                    Config.add_current_search_engine_to_blacklist()
+                    repeat = True
+        # Extracting the no of results from the stats_text
+        if stats_text != "":
+            if search_engine_name == "bing":
+                # For Bing sometimes, the stats text is in the form "About 999,000,000 results.
+                # Other times it is "999,000,000 results. So handling this case
+                stats_text_split = stats_text.split()
+                if len(stats_text_split) == 3:
+                    # "About 999,000,000 results" case
+                    number_of_search_results_text = stats_text_split[1]
+                else:
+                    number_of_search_results_text = stats_text_split[0]
+                number_of_search_results = int("".join(number_of_search_results_text.split(",")))
             else:
-                number_of_search_results_text = stats_text_split[0]
-            number_of_search_results = int("".join(number_of_search_results_text.split(",")))
-        else:
-            number_of_search_results = int("".join(stats_text.split()[1].split(",")))
-    if Config.DEBUG:
-        HelperFunctions.print_debug(f"number of search results for {word}: {number_of_search_results}")
+                number_of_search_results = int("".join(stats_text.split()[1].split(",")))
+        if Config.DEBUG:
+            HelperFunctions.print_debug(f"number of search results for {word}: {number_of_search_results}")
 
-    # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
-    identifier_section = search_engine["identifier_section"]
-    results = HelperFunctions.extract_from_soup(soup, identifier_section, find_all=True)
-
+        # TODO: see issue #6 https://github.com/20004427/SCRAN/issues/6
+        identifier_section = search_engine["identifier_section"]
+        results = HelperFunctions.extract_from_soup(soup, identifier_section, find_all=True)
+        if not repeat:
+            break
     ret = [number_of_search_results]
     for result in results:
         link = ""
@@ -174,5 +193,10 @@ def get_source(url):
         return driver
     except requests.exceptions.RequestException as e:
         if Config.DEBUG:
+            HelperFunctions.print_error(e.strerror)
+        return -1
+    except selenium.common.exceptions.WebDriverException as e:
+        if Config.DEBUG:
+            HelperFunctions.print_debug(f"URL {url}")
             HelperFunctions.print_error(e.strerror)
         return -1

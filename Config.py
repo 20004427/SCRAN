@@ -1,7 +1,9 @@
+import HelperFunctions
 # __________ Config/ global variables __________
 # ____ RUNTIME GLOBALS (NON-CONSTANT)
 # This is used by Main, HelperFunctions, and APIs,
 # So made it global - so that we don't have to keep passing about and returning it.
+global google_search_engine, search_engine_blacklist
 google_search_engine = 0
 
 # ____ CONSTANTS ____
@@ -41,37 +43,41 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                     "identifier_title": ["h3", None],
                                     "identifier_link": [["div", "class", "yuRUbf"]],
                                     "identifier_stats": ["div", "id", "result-stats"],
-                                    "identifier_text": [".VwiC3b > span"]},
+                                    "identifier_text": [".VwiC3b > span"],
+                                    "block_check": [["div", "id", "infoDiv"],
+                                                    "This page appears when Google automatically"]},
                          "bing": {"url": "https://www.bing.com/search?q={}",
                                   "identifier_section": ["li", "class", "b_algo"],
                                   "identifier_title": ["h2", None],
                                   "identifier_link": [[".b_title > h2"], ["h2", None]],
                                   "identifier_stats": ["span", "class", "sb_count"],
                                   "identifier_text": ["p", "class", "b_lineclamp2"]},
-                         # "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
-                         #                "identifier_section": ["article", "class", "yQDlj3B5DI5YO8c8Ulio"],
-                         #                "identifier_title": ["span", "class", "EKtkFWMYpwzMKOYr0GYm"],
-                         #                "identifier_link": [["h2", "class", "LnpumSThxEWMIsDdAT17"]],
-                         #                "identifier_stats": None,
-                         #                "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"]},
+                         "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
+                                        "identifier_section": ["article", "class", "yQDlj3B5DI5YO8c8Ulio"],
+                                        "identifier_title": ["span", "class", "EKtkFWMYpwzMKOYr0GYm"],
+                                        "identifier_link": [["h2", "class", "LnpumSThxEWMIsDdAT17"]],
+                                        "identifier_stats": None,
+                                        "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"]},
                          "yahoo": {"url": "https://nz.search.yahoo.com/search?q={}",
                                    "identifier_section": ["div", "class", "algo-sr"],
                                    "identifier_title": ["h3", "class", "title"],
                                    "identifier_link": [["h3", "class", "title"]],
                                    "identifier_stats": ["span", "class", ".fz-14"],
-                                   "identifier_text": ["span", "class", "fc-falcon"]},
-                         # "dogpile": {"url": "https://dogpile.com/serp?q={}",
-                         #             "identifier_section": ["div", "class", "web-bing__result"],
-                         #             "identifier_title": ["a", "class", "web-bing__title"],
-                         #             "identifier_link": [["web-bing__title"]],
-                         #             "identifier_stats": None,
-                         #             "identifier_text": ["span", "class", "web-bing__description"]}
+                                   "identifier_text": ["span", "class", "fc-falcon"],
+                                   "block_check": None},
+                         "dogpile": {"url": "https://dogpile.com/serp?q={}",
+                                     "identifier_section": ["div", "class", "web-bing__result"],
+                                     "identifier_title": ["a", "class", "web-bing__title"],
+                                     "identifier_link": [["web-bing__title"]],
+                                     "identifier_stats": None,
+                                     "identifier_text": ["span", "class", "web-bing__description"]}
                          }
+
 # Delay is in seconds
 SCRAPE_MIN_DELAY = 0
 SCRAPE_MAX_DELAY = 5
 GOOGLE_SCRAPE_NO_SITES = 10
-GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 3
+GOOGLE_SCRAPE_RECURSION_DEPTH_LIMIT = 1
 GOOGLE_SCRAPE_DO_RECURSION = True
 
 # ___ GOOGLE SCHOLAR ___
@@ -96,3 +102,28 @@ PAJEK_OTHER_NODE_COLOR = "Purple"
 # one for the x axis and one for the y axis.
 words_to_graph = []
 values_to_graph = []
+
+# Blacklist for search engines.
+# These are search engines that have blocked this ip.
+# These are the indexes of the search engines.
+search_engine_blacklist = []
+
+
+# __________ FUNCTIONS __________
+# These functions are here to change variables
+# in the config.
+def increment_search_engine():
+    global google_search_engine, search_engine_blacklist
+    flag = True
+    while flag:
+        if google_search_engine + 1 == len(SCRAPE_SEARCH_ENGINES):
+            google_search_engine = 0
+        else:
+            google_search_engine += 1
+        if google_search_engine not in search_engine_blacklist:
+            flag = False
+
+
+def add_current_search_engine_to_blacklist():
+    global google_search_engine, search_engine_blacklist
+    search_engine_blacklist.append(google_search_engine)

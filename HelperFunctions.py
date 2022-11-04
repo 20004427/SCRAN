@@ -247,13 +247,6 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     return True
 
 
-def increment_search_engine():
-    if Config.google_search_engine + 1 == len(Config.SCRAPE_SEARCH_ENGINES):
-        Config.google_search_engine = 0
-    else:
-        Config.google_search_engine += 1
-
-
 def extract_from_soup(soup, input_, find_all=False):
     """
     HelperFunction - removes duplicate code from APIs
