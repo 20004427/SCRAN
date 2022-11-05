@@ -2,11 +2,8 @@ import pandas
 import keybert
 import APIs
 import Config
-import Config
-import HelperFunctions
 import numpy as np
 from pattern.text.en import lexeme
-from scipy.signal import argrelmin
 
 
 def read_keywords(path, sheet_name):
@@ -238,7 +235,7 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     number_of_search_results = scrape_output[0]
     Config.words_to_graph.append(word)
     Config.values_to_graph.append(number_of_search_results)
-    linking_keywords = HelperFunctions.extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
+    linking_keywords = extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
     for w in linking_keywords:
         if recursively_scrape_word(w, lexeme_dictionary, graph, n+1):
             graph.add_edge(word, w)

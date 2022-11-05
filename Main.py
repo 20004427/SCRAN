@@ -85,9 +85,6 @@ pt.savefig("output.png")
 pt.show()
 HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
 
-# It's possible that some of the words are None.
-# Filtering these out.
-Config.values_to_graph = [x for x in Config.values_to_graph if x is not None]
 
 Config.values_to_graph.sort()
 if Config.DEBUG:
@@ -120,6 +117,14 @@ if Config.DEBUG:
 
 
 def f(x_):
+    """
+    Function to map x to y.
+    Uses an exponential fit.
+    Form: a + b*e^x
+
+    :param x_: (Numpy Array) an array of x values.
+    :return: (Numpy Array) an array of y values.
+    """
     return fit[1] + fit[0] * np.exp(x_)
 
 
