@@ -72,7 +72,7 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                      "identifier_link": [["web-bing__title"]],
                                      "identifier_stats": None,
                                      "identifier_text": ["span", "class", "web-bing__description"],
-                                     "block_check": None},
+                                     "block_check": ["span", "class", "error-description"]},
                          }
 
 # Delay is in seconds

@@ -148,6 +148,10 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     for word in keyword_counts:
         try:
             float(word)
+            # For connectivity purposes, allowing years
+            # At least for the moment
+            if len(word) == 4:
+                ret_keywords.append(word)
         except ValueError:
             ret_keywords.append(word)
 
