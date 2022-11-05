@@ -106,9 +106,6 @@ def get_traceback_location(exception):
 
 def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword, no_keywords=3):
     """
-    Currently just using the inputted  keywords.
-    TODO: Add learning algorithm to extract keywords,
-        see issue #7 : https://github.com/20004427/SCRAN/issues/7
     Takes the scrape results and extracts the keywords from it.
     Returns a list of the n most commonly occurring keywords from the different
     site descriptions. Note: it will not count keywords that occur 0 times.
@@ -124,7 +121,8 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     kb = keybert.KeyBERT()
     for site in scrape_list:
         blurb = site['text'].replace("...", "")
-        print(blurb)
+        if Config.DEBUG:
+            print_debug(blurb)
         # This gets the keywords.
         # Ignoring any keywords in the blacklist
         keywords = [i[0] for i in kb.extract_keywords(blurb) if i[0].lower() not in Config.BLACKLIST_KEYWORDS]
@@ -137,15 +135,22 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
                 keyword_counts[keyword] = keywords.count(keyword)
             else:
                 keyword_counts[keyword] += keywords.count(keyword)
-        print(f"the learning algorithm got: {keywords}")
+        print(f"For {parent_keyword}, the learning algorithm got: {keywords}")
     # filtering and sorting the keywords
     keyword_counts = dict(filter(lambda x: x[1] > 0, keyword_counts.items()))
     try:
         sorted(keyword_counts, key=lambda x: x[1], reverse=True)
     except Exception as e:
         print_traceback_location(e)
-        print(keyword_counts)
-    ret_keywords = [i for i in keyword_counts]
+
+    # Filtering out numeric values
+    ret_keywords = []
+    for word in keyword_counts:
+        try:
+            float(word)
+        except ValueError:
+            ret_keywords.append(word)
+
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
     return ret_keywords[:no_keywords]
