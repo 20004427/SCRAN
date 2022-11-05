@@ -86,6 +86,7 @@ pt.show()
 HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
 
 
+print(f"values to graph: {Config.values_to_graph}")
 Config.values_to_graph.sort()
 if Config.DEBUG:
     HelperFunctions.print_debug(f"Values to graph: {Config.values_to_graph}")

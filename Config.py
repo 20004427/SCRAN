@@ -50,13 +50,15 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                   "identifier_title": ["h2", None],
                                   "identifier_link": [[".b_title > h2"], ["h2", None]],
                                   "identifier_stats": ["span", "class", "sb_count"],
-                                  "identifier_text": ["p", "class", "b_lineclamp2"]},
+                                  "identifier_text": ["p", "class", "b_lineclamp2"],
+                                  "block_check": None},
                          "duckduckgo": {"url": "https://duckduckgo.com/?q={}",
                                         "identifier_section": ["article", "class", "yQDlj3B5DI5YO8c8Ulio"],
                                         "identifier_title": ["span", "class", "EKtkFWMYpwzMKOYr0GYm"],
                                         "identifier_link": [["h2", "class", "LnpumSThxEWMIsDdAT17"]],
                                         "identifier_stats": None,
-                                        "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"]},
+                                        "identifier_text": ["div", "class", "OgdwYG6KE2qthn9XQWFC"],
+                                        "block_check": None},
                          "yahoo": {"url": "https://nz.search.yahoo.com/search?q={}",
                                    "identifier_section": ["div", "class", "algo-sr"],
                                    "identifier_title": ["h3", "class", "title"],
@@ -69,7 +71,8 @@ SCRAPE_SEARCH_ENGINES = {"google": {"url": "https://www.google.co.nz/search?q={}
                                      "identifier_title": ["a", "class", "web-bing__title"],
                                      "identifier_link": [["web-bing__title"]],
                                      "identifier_stats": None,
-                                     "identifier_text": ["span", "class", "web-bing__description"]}
+                                     "identifier_text": ["span", "class", "web-bing__description"],
+                                     "block_check": None},
                          }
 
 # Delay is in seconds

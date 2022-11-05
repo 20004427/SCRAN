@@ -238,8 +238,11 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
     scrape_output = APIs.scrape_google(word)
     scrape_results = scrape_output[1:]
     number_of_search_results = scrape_output[0]
-    Config.words_to_graph.append(word)
-    Config.values_to_graph.append(number_of_search_results)
+    if number_of_search_results is not None:
+        # Note that these are for python plotting,
+        # they do not affect the .net output.
+        Config.words_to_graph.append(word)
+        Config.values_to_graph.append(number_of_search_results)
     linking_keywords = extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
     for w in linking_keywords:
         if recursively_scrape_word(w, lexeme_dictionary, graph, n+1):
