@@ -17,6 +17,7 @@ if Config.USE_TEST_DATA:
                  "Shipping", "Singapore", "Air Freight", "Los Angeles", "Shanghai", "Auckland",
                  "Available Equipment & Parts", "Cost", "Available credit", "Cybersecurity",
                  "Labour", "Absenteeism", "Attrition", "Staff Burnout", "Salary wars", "Strikes"]
+    word_list = ["Warehousing", "Overstocking", "Panic Buying"]
     # word_list = ["Pallets", "Packing", "Supplier Reliability"]
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection

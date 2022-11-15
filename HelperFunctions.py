@@ -258,6 +258,7 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
         Config.values_to_graph.append(number_of_search_results)
     linking_keywords = extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
     for w in linking_keywords:
+        w = lexeme(w)[0]
         if recursively_scrape_word(w, lexeme_dictionary, graph, n + 1):
             graph.add_edge(word, w)
     if Config.DEBUG:
