@@ -146,7 +146,7 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     # Filtering out numeric values
     ret_keywords = []
     for word in keyword_counts:
-        if word != parent_keyword:
+        if word.lower() != parent_keyword.lower():
             try:
                 float(word)
                 # For connectivity purposes, allowing years
