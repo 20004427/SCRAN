@@ -153,7 +153,8 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
             if len(word) == 4:
                 ret_keywords.append(word)
         except ValueError:
-            ret_keywords.append(word)
+            if word != parent_keyword:
+                ret_keywords.append(word)
 
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
@@ -168,7 +169,7 @@ def export_to_pajek(graph, original_nodes=[]):
     :param original_nodes: (Array)
     :return: (NONE)
     """
-    file = open("output.NET", "w+")
+    file = open("output.NET", "w+", encoding="utf-8")
     # Adding the vertices
     file.write(f"*vertices {len(graph.nodes)}\n")
     vertex_ids = {}
@@ -180,7 +181,11 @@ def export_to_pajek(graph, original_nodes=[]):
             string_to_write += f"ic {Config.PAJEK_ORIGINAL_NODE_COLOR}\n"
         else:
             string_to_write += f"ic {Config.PAJEK_OTHER_NODE_COLOR}\n"
-        file.write(string_to_write)
+        try:
+            file.write(string_to_write)
+        except UnicodeEncodeError as e:
+            print_traceback_location(e)
+            print_error(f"Vertex {vertex} failed to write")
         vertex_ids[vertex] = vertex_id
     file.write("*Edges\n")
     # You don't have to declare the vertices,
@@ -240,6 +245,10 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
         return False
     graph.add_node(word)
     scrape_output = APIs.scrape_google(word)
+    number_of_scrape_outputs = scrape_output[0]
+    if number_of_scrape_outputs is not None and \
+            number_of_scrape_outputs <= Config.MINIMUM_WORD_POPULARITY:
+        return False
     scrape_results = scrape_output[1:]
     number_of_search_results = scrape_output[0]
     if number_of_search_results is not None:
@@ -249,7 +258,7 @@ def recursively_scrape_word(word, lexeme_dictionary, graph, n=0):
         Config.values_to_graph.append(number_of_search_results)
     linking_keywords = extract_keywords_from_scrape(scrape_results, lexeme_dictionary, word)
     for w in linking_keywords:
-        if recursively_scrape_word(w, lexeme_dictionary, graph, n+1):
+        if recursively_scrape_word(w, lexeme_dictionary, graph, n + 1):
             graph.add_edge(word, w)
     if Config.DEBUG:
         print(f"The keywords relating to {word} are {linking_keywords}")
@@ -297,7 +306,7 @@ def distance(x0, y0, x1, y1):
     """
     x_distance = x0 - x1
     y_distance = y0 - y1
-    return np.sqrt(x_distance**2 + y_distance**2)
+    return np.sqrt(x_distance ** 2 + y_distance ** 2)
 
 
 def min_distance(x, y, point):

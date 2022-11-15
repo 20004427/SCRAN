@@ -78,12 +78,12 @@ for key in lexeme_dictionary:
         HelperFunctions.print_debug(f"The keywords relating to {key} are {linking_keywords}")
 
 HelperFunctions.cleanup_graph(graph)
+HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
 # Output
 pos = nx.spring_layout(graph)
 nx.draw(graph, with_labels=True, pos=pos)
 pt.savefig("output.png")
 pt.show()
-HelperFunctions.export_to_pajek(graph, [key.lower() for key in lexeme_dictionary])
 
 
 print(f"values to graph: {Config.values_to_graph}")
