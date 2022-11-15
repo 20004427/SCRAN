@@ -146,15 +146,16 @@ def extract_keywords_from_scrape(scrape_list, lexeme_dictionary, parent_keyword,
     # Filtering out numeric values
     ret_keywords = []
     for word in keyword_counts:
-        try:
-            float(word)
-            # For connectivity purposes, allowing years
-            # At least for the moment
-            if len(word) == 4:
-                ret_keywords.append(word)
-        except ValueError:
-            if word != parent_keyword:
-                ret_keywords.append(word)
+        if word != parent_keyword:
+            try:
+                float(word)
+                # For connectivity purposes, allowing years
+                # At least for the moment
+                if len(word) == 4:
+                    ret_keywords.append(word)
+            except ValueError:
+                if word != parent_keyword:
+                    ret_keywords.append(word)
 
     if len(ret_keywords) <= no_keywords:
         return ret_keywords
