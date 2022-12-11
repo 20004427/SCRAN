@@ -12,12 +12,12 @@ lexeme_dictionary = {}
 
 if Config.USE_TEST_DATA:
     # Test data - data from the mid-year review
-    word_list = ["Bullwhip", "Stockouts", "Warehousing", "Overstocking", "Panic Buying",
-                 "Pallets", "Packing", "Supplier Reliability", "Raw Materials", "Containers",
-                 "Shipping", "Singapore", "Air Freight", "Los Angeles", "Shanghai", "Auckland",
-                 "Available Equipment & Parts", "Cost", "Available credit", "Cybersecurity",
-                 "Labour", "Absenteeism", "Attrition", "Staff Burnout", "Salary wars", "Strikes"]
-    word_list = ["Labour", "Absenteeism", "Attrition"]
+    word_list = ["Long Lead-times", "Warehousing Demand", "Skills Shortages", "Slow Steaming", "Container Congestion", "Cyber Security", "Market Realignment"
+                 "Staff Shortages", "Cost Related Inefficiencies", "Product Rationing", "Rising Wages", "Industrial Action", "Construction", "Blank sailings",
+                 "Biosecurity", "Market Volatility", "Compliance costs", "Poor supply chain efficiencies", "Detention charges", "Domestic transport", "On Shoring",
+                 "Container Supplies", "Partner Consolidation", "Chain reliability", "Container Supplies", "High Inventory Levels", "Inexperienced staff", "Silicon chip shortages",
+                 "Equipment Availability", "Staff Burnout", "Climate Risks", "Chain Restructure", "Freight Carrier Viability", "Raw Material Availability",
+                 "Lower Margins", "Trans-Tasmin Shipping", "Insufficient Capital Investments"]
     # word_list = ["Pallets", "Packing", "Supplier Reliability"]
     # For each key word. Finding the Lexeme of each.
     # Lexeme is a unit of lexical meaning that underlies a set of words that are related through inflection
@@ -25,7 +25,8 @@ if Config.USE_TEST_DATA:
     for word in word_list:
         # Unfortunately, lexeme() will throw an error if no inflections exist for the word.
         try:
-            lexeme_dictionary[word] = lexeme(word)
+            inflections = lexeme(word)
+            lexeme_dictionary[inflections[0]] = inflections[1:]
         except RuntimeError as e:
             lexeme_dictionary[word] = []
 else:

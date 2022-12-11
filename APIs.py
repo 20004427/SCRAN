@@ -7,6 +7,7 @@ import selenium.common.exceptions
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 import Config
@@ -14,6 +15,13 @@ import HelperFunctions
 
 
 # __________ GOOGLE __________
+
+# ___ Selenium setting ___
+# This allows the window to open silently
+# instead of it opening at the front and being focused.
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--window-size=%s" % Config.WINDOW_SIZE)
 
 
 def scrape_google(word):
@@ -40,7 +48,7 @@ def scrape_google(word):
         # We can do this since the values will be unique
         search_engine = Config.SCRAPE_SEARCH_ENGINES[search_engine_name]
         number_of_search_results = None
-        query = urllib.parse.quote_plus(f"\"Supply chain {word}\"")
+        query = urllib.parse.quote_plus(f"\"Supply chain\" {word}")
         response = get_source(search_engine["url"].format(query))
         if response == -1:
             repeat = True
@@ -190,7 +198,8 @@ def get_source(url):
     :return: (object | requests_html)
     """
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
+                                  chrome_options=chrome_options)
         driver.get(url)
         return driver
     except requests.exceptions.RequestException as e:
